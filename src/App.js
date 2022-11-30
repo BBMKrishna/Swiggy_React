@@ -1,5 +1,8 @@
 import Restaurant from "./Restaurant";
 import React from "react";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+
 function App() {
   const [data, setData] = React.useState([]);
   React.useEffect(() => {
@@ -14,7 +17,7 @@ function App() {
     <div className="container">
       <h1
         style={{
-          marginBottom: "20px",
+          marginBottom: "24px",
           padding: "16px",
           borderBottom: "1px solid lightgrey",
         }}
@@ -22,11 +25,13 @@ function App() {
         {data.length} restaurants
       </h1>
 
-      <div className="row">
-        {data.map((item) => (
-          <Restaurant key={item.id} info={item} />
-        ))}
-      </div>
+      <Box sx={{ flexGrow: 1 }}>
+        <Grid container spacing={3}>
+          {data.map((item) => (
+            <Restaurant key={item.id} info={item} />
+          ))}
+        </Grid>
+      </Box>
     </div>
   );
 }

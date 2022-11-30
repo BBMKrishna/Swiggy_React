@@ -1,34 +1,63 @@
 import React from "react";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import { styled } from "@mui/material/styles";
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
+import StarIcon from "@mui/icons-material/Star";
 
 function Restaurant(props) {
-  return (
-    <div className="col-lg-3 col-md-6 col-sm-12 p-3">
-      <div className="card" style={{ margin: "auto", width: "256px" }}>
-        <img
-          src={props.info.imageUrl}
-          className="card-img-top"
-          style={{ width: "254px", height: "160px" }}
-        />
-        <div className="card-body">
-          <h5 className="card-title">{props.info.name}</h5>
-          <h6 className="card-subtitle">{props.info.address}</h6>
+  const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+  }));
 
-          <div style={{ marginTop: "4%", color: "white" }}>
-            <div
-              style={{
-                backgroundColor: props.info.rating > 4 ? "#48c479" : "#db7c38",
-                display: "inline",
-              }}
-            >
-              <i class="fa-solid fa-star"></i> {props.info.rating}
-            </div>
-            <span style={{ marginLeft: "60%", color: "grey" }}>
-              {props.info.city}
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
+  return (
+    <Grid item xs={3}>
+      <Card className="card" sx={{ maxWidth: 345 }}>
+        <CardMedia
+          component="img"
+          height="220"
+          image={props.info.imageUrl}
+          alt="green iguana"
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            {props.info.name}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {props.info.address}
+          </Typography>
+        </CardContent>
+        <CardActions>
+          <Button
+            style={{
+              backgroundColor: props.info.rating > 4 ? "#db7c38" : "#48c479",
+              color: "white",
+            }}
+          >
+            <StarIcon fontSize="small" />
+            {props.info.rating}
+          </Button>
+          <Button
+            style={{
+              
+              color: "grey",marginLeft:"50%"
+            }}
+            size="medium"
+          >
+            {props.info.city}
+          </Button>
+        </CardActions>
+      </Card>
+    </Grid>
   );
 }
 
