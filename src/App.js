@@ -8,7 +8,7 @@ function App() {
       .then((data) => {
         setData(data);
       });
-  }, [data]);
+  }, []);
 
   return (
     <div className="container">
