@@ -9,51 +9,51 @@ import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import StarIcon from "@mui/icons-material/Star";
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+}));
 
 function Restaurant(props) {
-  const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-  }));
-
+  const { imageUrl, name, address, city, rating } = props.info;
   return (
     <Grid item xs={3}>
       <Card className="card" sx={{ maxWidth: 345 }}>
         <CardMedia
           component="img"
           height="220"
-          image={props.info.imageUrl}
+          image={imageUrl}
           alt="green iguana"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            {props.info.name}
+            {name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {props.info.address}
+            {address}
           </Typography>
         </CardContent>
         <CardActions>
           <Button
             style={{
-              backgroundColor: props.info.rating > 4 ? "#db7c38" : "#48c479",
+              backgroundColor: rating < 4 ? "#db7c38" : "#48c479",
               color: "white",
             }}
           >
             <StarIcon fontSize="small" />
-            {props.info.rating}
+            {rating}
           </Button>
           <Button
             style={{
-              
-              color: "grey",marginLeft:"50%"
+              color: "grey",
+              marginLeft: "50%",
             }}
             size="medium"
           >
-            {props.info.city}
+            {city}
           </Button>
         </CardActions>
       </Card>
