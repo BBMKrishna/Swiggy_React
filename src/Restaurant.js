@@ -22,12 +22,7 @@ function Restaurant(props) {
   return (
     <Grid item xs={3}>
       <Card className="card" sx={{ maxWidth: 345 }}>
-        <CardMedia
-          component="img"
-          height="220"
-          image={imageUrl}
-          alt="green iguana"
-        />
+        <CardMedia component="img" height="220" image={imageUrl} />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {name}
