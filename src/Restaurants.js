@@ -32,7 +32,7 @@ function Restaurants() {
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={3}>
           {data.map((restaurant) => {
-            return <Restaurant restaurant={restaurant} />;
+            return <Restaurant key={restaurant.id} restaurant={restaurant} />;
           })}
         </Grid>
       </Box>

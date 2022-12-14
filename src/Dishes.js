@@ -32,7 +32,7 @@ const Dishes = () => {
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={3}>
             {Dishes.map((dish) => {
-              return <Dish dish={dish} />;
+              return <Dish key={dish.id} dish={dish} />;
             })}
           </Grid>
         </Box>
