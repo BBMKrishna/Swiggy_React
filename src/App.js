@@ -1,8 +1,8 @@
-import Restaurant from "./Restaurant";
+import Restaurants from "./Restaurants";
 import React from "react";
 import Dishes from "./Dishes";
 import SharedLayout from "./pages/SharedLayout";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<SharedLayout />}>
-            <Route index element={<Restaurant />}></Route>
+            <Route index element={<Restaurants />}></Route>
             <Route path="restaurants/:restaurantId" element={<Dishes />} />
           </Route>
         </Routes>
