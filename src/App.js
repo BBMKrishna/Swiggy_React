@@ -10,8 +10,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<SharedLayout />}>
-            <Route index element={<Restaurants />}></Route>
-            <Route path="restaurants/:restaurantId" element={<Dishes />} />
+            <Route index element={<Restaurants />} />
+            <Route path="dishes/:restaurantId" element={<Dishes />} />
           </Route>
         </Routes>
       </BrowserRouter>
