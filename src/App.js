@@ -11,7 +11,7 @@ function App() {
         <Routes>
           <Route path="/" element={<SharedLayout />}>
             <Route index element={<Restaurants />} />
-            <Route path="dishes/:restaurantId" element={<Dishes />} />
+            <Route path="restaurants/:restaurantId/dishes" element={<Dishes />} />
           </Route>
         </Routes>
       </BrowserRouter>

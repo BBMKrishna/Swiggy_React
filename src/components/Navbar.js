@@ -49,7 +49,12 @@ function DrawerAppBar(props) {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar component="nav">
+      <AppBar
+        component="nav"
+        style={{
+          backgroundColor: "white",
+        }}
+      >
         <Toolbar>
           <IconButton
             color="white"
@@ -68,8 +73,10 @@ function DrawerAppBar(props) {
             <Link
               style={{
                 textDecoration: "none",
-                color: "white",
-                fontFamily: "cursive",
+                color: "orange",
+                fontFamily: "serif",
+                fontWeight: "700",
+                fontSize: "36px",
               }}
               to="/"
             >
@@ -79,7 +86,11 @@ function DrawerAppBar(props) {
 
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) => (
-              <Button key={item} sx={{ color: "#fff" }}>
+              <Button
+                key={item}
+                sx={{ color: "#fff" }}
+                style={{ color: "orange" }}
+              >
                 {item}
               </Button>
             ))}

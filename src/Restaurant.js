@@ -12,7 +12,7 @@ function Restaurant({ restaurant }) {
   const { id, imageUrl, name, address, city, rating } = restaurant;
   return (
     <Grid item xs={3}>
-      <Link style={{ textDecoration: "none" }} to={`/dishes/${id}`}>
+      <Link style={{ textDecoration: "none" }} to={`/restaurants/${id}/dishes`}>
         <Card className="card" sx={{ maxWidth: 345 }}>
           <CardMedia component="img" height="220" image={imageUrl} />
           <CardContent>

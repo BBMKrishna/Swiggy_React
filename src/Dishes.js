@@ -5,18 +5,15 @@ import Box from "@mui/material/Box";
 import Dish from "./Dish";
 const Dishes = () => {
   const [dishes, setDishes] = React.useState([]);
+  const { restaurantId } = useParams();
   useEffect(() => {
-    fetch("http://localhost:3080/Dishes")
+    fetch(`http://localhost:3080/restaurants/${restaurantId}/dishes`)
       .then((res) => res.json())
       .then((data) => {
         setDishes(data);
       });
-  }, []);
+  }, [restaurantId]);
 
-  const { restaurantId } = useParams();
-  const Dishes = dishes.filter(
-    (dish) => dish.restaurantId === parseInt(restaurantId)
-  );
   return (
     <>
       <div className="container">
@@ -27,11 +24,11 @@ const Dishes = () => {
             borderBottom: "1px solid lightgrey",
           }}
         >
-          {Dishes.length} dishes
+          {dishes.length} dishes
         </h1>
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={3}>
-            {Dishes.map((dish) => {
+            {dishes.map((dish) => {
               return <Dish key={dish.id} dish={dish} />;
             })}
           </Grid>
