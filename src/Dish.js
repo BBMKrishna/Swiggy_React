@@ -6,9 +6,11 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-
+import React from "react";
+import { contextData } from "./App";
 function Dish({ dish }) {
-  const { imageUrl, name, nonVeg, price } = dish;
+  const { addToCart } = React.useContext(contextData);
+  const { id, imageUrl, name, nonVeg, price } = dish;
   return (
     <Grid item xs={3}>
       <Card className="card" sx={{ maxWidth: 345 }}>
@@ -30,11 +32,21 @@ function Dish({ dish }) {
           <Button
             style={{
               color: "grey",
-              marginLeft: "50%",
+              marginLeft: "20%",
             }}
             size="medium"
           >
             ${price}
+          </Button>
+          <Button
+            onClick={() => {
+            addToCart(id);
+            }}
+            style={{ marginLeft: "20%" }}
+            variant="outlined"
+            color="success"
+          >
+            Add
           </Button>
         </CardActions>
       </Card>

@@ -5,19 +5,17 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
+import { contextData } from "./../App";
+import HomeIcon from "@mui/icons-material/Home";
 const drawerWidth = 240;
-const navItems = ["offers", "Help", "cart"];
-
 function DrawerAppBar(props) {
+  const { cartItems } = React.useContext(contextData);
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -31,15 +29,6 @@ function DrawerAppBar(props) {
         Swiggy
       </Typography>
       <Divider />
-      <List>
-        {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }}>
-              <ListItemText primary={item} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
     </Box>
   );
 
@@ -69,6 +58,7 @@ function DrawerAppBar(props) {
             variant="h6"
             component="div"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+            style={{ marginLeft: "30px" }}
           >
             <Link
               style={{
@@ -85,15 +75,38 @@ function DrawerAppBar(props) {
           </Typography>
 
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            {navItems.map((item) => (
-              <Button
-                key={item}
-                sx={{ color: "#fff" }}
-                style={{ color: "orange" }}
+            <Button key={1} style={{ color: "orange" }}>
+              <Link
+                style={{
+                  textDecoration: "none",
+                  color: "orange",
+                  fontFamily: "serif",
+                  fontWeight: "700",
+                  fontSize: "12px",
+                }}
+                to="/"
               >
-                {item}
-              </Button>
-            ))}
+                <HomeIcon fontSize="small" />
+              </Link>
+            </Button>
+            <Button
+              key={2}
+              sx={{ color: "#fff" }}
+              style={{ color: "orange", marginRight: "30px" }}
+            >
+              <Link
+                style={{
+                  textDecoration: "none",
+                  color: "orange",
+                  fontFamily: "san-serif",
+                  fontWeight: "700",
+                  fontSize: "12px",
+                }}
+                to="/cart"
+              >
+                <ShoppingCartIcon fontSize="small" /> {cartItems.length}
+              </Link>
+            </Button>
           </Box>
         </Toolbar>
       </AppBar>

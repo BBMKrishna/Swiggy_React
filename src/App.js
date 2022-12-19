@@ -3,18 +3,44 @@ import React from "react";
 import Dishes from "./Dishes";
 import SharedLayout from "./pages/SharedLayout";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import Cart from "./Cart";
+export const contextData = React.createContext();
 function App() {
+  const [cartItems, setCartItems] = React.useState([]);
+  const [dishes, setDishes] = React.useState([]);
+  function addToCart(id) {
+    if (cartItems.find((x) => x.id === id) === undefined) {
+      dishes.forEach((item) => {
+        if (item.id === id) {
+          item.quantity = 1;
+          setCartItems((prevCart) => {
+            return [...prevCart, item];
+          });
+        }
+      });
+    } else {
+      cartItems.find((x) => x.id === id).quantity += 1;
+    }
+  }
+
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<SharedLayout />}>
-            <Route index element={<Restaurants />} />
-            <Route path="restaurants/:restaurantId/dishes" element={<Dishes />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <contextData.Provider
+        value={{ cartItems, setCartItems, dishes, setDishes, addToCart }}
+      >
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<SharedLayout />}>
+              <Route index element={<Restaurants />} />
+              <Route
+                path="restaurants/:restaurantId/dishes"
+                element={<Dishes />}
+              />
+              <Route path="cart" element={<Cart cartItems={cartItems} />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </contextData.Provider>
     </>
   );
 }
