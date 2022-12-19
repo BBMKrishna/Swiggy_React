@@ -11,11 +11,11 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
-import { contextData } from "./../App";
+import { cartContext } from "./../App";
 import HomeIcon from "@mui/icons-material/Home";
 const drawerWidth = 240;
 function DrawerAppBar(props) {
-  const { cartItems } = React.useContext(contextData);
+  const { cartItems } = React.useContext(cartContext);
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 

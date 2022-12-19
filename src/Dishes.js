@@ -3,9 +3,9 @@ import React, { useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Dish from "./Dish";
-import { contextData } from "./App";
+import { cartContext } from "./App";
 const Dishes = () => {
-  const { dishes, setDishes } = React.useContext(contextData);
+  const { dishes, setDishes } = React.useContext(cartContext);
   const { restaurantId } = useParams();
   useEffect(() => {
     fetch(`http://localhost:3080/restaurants/${restaurantId}/dishes`)
