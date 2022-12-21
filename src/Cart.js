@@ -1,4 +1,4 @@
-import { cartContext } from "./App";
+import { AppContext } from "./App";
 import React from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -10,7 +10,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 function Cart() {
-  const { cartItems } = React.useContext(cartContext);
+  const { cartItems } = React.useContext(AppContext);
   return (
     <>
       <div className="container">
@@ -49,6 +49,7 @@ function Cart() {
                         style={{
                           color: "grey",
                           marginLeft: "20%",
+                          fontSize: "20px",
                         }}
                         size="medium"
                       >

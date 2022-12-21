@@ -4,13 +4,12 @@ import Dishes from "./Dishes";
 import SharedLayout from "./pages/SharedLayout";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Cart from "./Cart";
-export const cartContext = React.createContext();
+export const AppContext = React.createContext();
 function App() {
   const [cartItems, setCartItems] = React.useState([]);
   const [dishes, setDishes] = React.useState([]);
   function addToCart(id) {
-    const itemInCart = cartItems.find((x) => x.id === id);
-    if (itemInCart === undefined) {
+    if (cartItems.find((x) => x.id === id) === undefined) {
       let dishesIndex = dishes.findIndex((item) => item.id === id);
       let newItem = dishes[dishesIndex];
       newItem.quantity = 1;
@@ -18,13 +17,19 @@ function App() {
         return [...prevCart, newItem];
       });
     } else {
-      itemInCart.quantity += 1;
+      const newItem = cartItems.map((item) => {
+        if (item.id === id) {
+          return { ...item, quantity: (item.quantity += 1) };
+        }
+        return item;
+      });
+      setCartItems(newItem);
     }
   }
 
   return (
     <>
-      <cartContext.Provider
+      <AppContext.Provider
         value={{ cartItems, setCartItems, dishes, setDishes, addToCart }}
       >
         <BrowserRouter>
@@ -35,11 +40,11 @@ function App() {
                 path="restaurants/:restaurantId/dishes"
                 element={<Dishes />}
               />
-              <Route path="cart" element={<Cart cartItems={cartItems} />} />
+              <Route path="cart" element={<Cart />} />
             </Route>
           </Routes>
         </BrowserRouter>
-      </cartContext.Provider>
+      </AppContext.Provider>
     </>
   );
 }

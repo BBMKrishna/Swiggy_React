@@ -3,9 +3,9 @@ import React, { useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Dish from "./Dish";
-import { cartContext } from "./App";
+import { AppContext } from "./App";
 const Dishes = () => {
-  const { dishes, setDishes } = React.useContext(cartContext);
+  const { dishes, setDishes } = React.useContext(AppContext);
   const { restaurantId } = useParams();
   useEffect(() => {
     fetch(`http://localhost:3080/restaurants/${restaurantId}/dishes`)
@@ -29,8 +29,8 @@ const Dishes = () => {
         </h1>
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={3}>
-            {dishes.map((dish) => {
-              return <Dish key={dish.id} dish={dish} />;
+            {dishes.map((dish, index) => {
+              return <Dish key={dish.id} dish={dish} idx={index} />;
             })}
           </Grid>
         </Box>
