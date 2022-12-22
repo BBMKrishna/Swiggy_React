@@ -2,75 +2,93 @@ import { AppContext } from "./App";
 import React from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import CircleIcon from "@mui/icons-material/Circle";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
+import RemoveIcon from "@mui/icons-material/Remove";
+import AddIcon from "@mui/icons-material/Add";
+import Button from "@mui/material/Button";
+
 function Cart() {
-  const { cartItems } = React.useContext(AppContext);
+  const { cartItems, addToCart, removeFromCart, total } =
+    React.useContext(AppContext);
+  let Total = total();
   return (
-    <>
-      <div className="container">
-        <h1
-          style={{
-            marginBottom: "24px",
-            padding: "16px",
-            borderBottom: "1px solid lightgrey",
-          }}
-        >
-          {cartItems.length} dishes
-        </h1>
-        <Box sx={{ flexGrow: 1 }}>
-          <Grid container spacing={3}>
-            {cartItems.map((item) => {
-              const { id, imageUrl, name, nonVeg, price, quantity } = item;
-              return (
-                <Grid item xs={3} key={id}>
-                  <Card className="card" sx={{ maxWidth: 345 }}>
-                    <CardMedia component="img" height="220" image={imageUrl} />
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        {name}
-                      </Typography>
-                    </CardContent>
-                    <CardActions>
-                      <Button
-                        style={{
-                          backgroundColor: nonVeg ? "#db7c38" : "#48c479",
-                          color: "white",
-                        }}
-                      >
-                        <CircleIcon className="start" fontSize="small" />
-                      </Button>
-                      <Button
-                        style={{
-                          color: "grey",
-                          marginLeft: "20%",
-                          fontSize: "20px",
-                        }}
-                        size="medium"
-                      >
-                        ${price}
-                      </Button>
-                      <Button
-                        style={{ marginLeft: "20%" }}
-                        variant="outlined"
-                        color="success"
-                      >
-                        {quantity}
-                      </Button>
-                    </CardActions>
-                  </Card>
-                </Grid>
-              );
-            })}
-          </Grid>
-        </Box>
+    <div className="container">
+      <h1
+        style={{
+          marginBottom: "24px",
+          padding: "16px",
+          borderBottom: "1px solid lightgrey",
+        }}
+      >
+        {cartItems.length} dishes
+      </h1>
+
+      <Box sx={{ flexGrow: 1 }}>
+        <Grid container>
+          {cartItems.map((item) => {
+            const { id, imageUrl, name, price, quantity } = item;
+            return (
+              <Card
+                className="card"
+                style={{ border: " 1px solid grey" }}
+                sx={{ display: "flex", margin: 1 }}
+              >
+                <CardMedia
+                  component="img"
+                  sx={{ width: 151 }}
+                  image={imageUrl}
+                  alt={name}
+                />
+                <Box
+                  sx={{ display: "flex", flexDirection: "column", width: 180 }}
+                >
+                  <CardContent sx={{ flex: "1 0 auto" }}>
+                    <Typography component="div" variant="h5">
+                      {name}
+                    </Typography>
+                    <Typography variant="subtitle1" component="div">
+                      {price * quantity} ₹
+                    </Typography>
+                  </CardContent>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      pl: 1,
+                      pb: 1,
+                    }}
+                  >
+                    <IconButton
+                      onClick={() => {
+                        removeFromCart(id);
+                      }}
+                    >
+                      <RemoveIcon />
+                    </IconButton>
+
+                    <Button variant="outlined">{quantity}</Button>
+                    <IconButton
+                      onClick={() => {
+                        addToCart(id);
+                      }}
+                    >
+                      <AddIcon />
+                    </IconButton>
+                  </Box>
+                </Box>
+              </Card>
+            );
+          })}
+        </Grid>
+      </Box>
+      <div style={{ position: "fixed", bottom: "10px", right: "60px" }}>
+        <h2>Total - ₹ {Total}</h2>
       </div>
-    </>
+    </div>
   );
 }
 
