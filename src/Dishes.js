@@ -29,8 +29,8 @@ const Dishes = () => {
         </h1>
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={3}>
-            {dishes.map((dish, index) => {
-              return <Dish key={dish.id} dish={dish} idx={index} />;
+            {dishes.map((dish) => {
+              return <Dish key={dish.id} dish={dish} />;
             })}
           </Grid>
         </Box>

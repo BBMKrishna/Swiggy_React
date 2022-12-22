@@ -8,8 +8,8 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import React from "react";
 import { AppContext } from "./App";
-function Dish({ dish, idx }) {
-  const { addToCart, cartItems } = React.useContext(AppContext);
+function Dish({ dish }) {
+  const { addToCart } = React.useContext(AppContext);
   const { id, imageUrl, name, nonVeg, price } = dish;
   return (
     <Grid item xs={3}>
@@ -38,7 +38,6 @@ function Dish({ dish, idx }) {
             size="medium"
           >
             ${price}
-            {cartItems[idx]?.quantity}
           </Button>
           <Button
             onClick={() => { addToCart(id) }}
