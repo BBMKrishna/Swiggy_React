@@ -75,38 +75,37 @@ function DrawerAppBar(props) {
           </Typography>
 
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            <Button key={1} style={{ color: "orange" }}>
-              <Link
-                style={{
-                  textDecoration: "none",
-                  color: "orange",
-                  fontFamily: "serif",
-                  fontWeight: "700",
-                  fontSize: "12px",
-                }}
-                to="/"
-              >
-                <HomeIcon fontSize="small" />
-              </Link>
-            </Button>
-            <Button
-              key={2}
-              sx={{ color: "#fff" }}
-              style={{ color: "orange", marginRight: "30px" }}
+            <Link
+              style={{
+                textDecoration: "none",
+                color: "orange",
+                fontFamily: "serif",
+                fontWeight: "700",
+                fontSize: "12px",
+              }}
+              to="/"
             >
-              <Link
-                style={{
-                  textDecoration: "none",
-                  color: "orange",
-                  fontFamily: "san-serif",
-                  fontWeight: "700",
-                  fontSize: "12px",
-                }}
-                to="/cart"
+              <Button key={1} style={{ color: "orange" }}>
+                <HomeIcon fontSize="small" />
+              </Button>
+            </Link>
+            <Link
+              style={{
+                textDecoration: "none",
+                color: "orange",
+                fontFamily: "san-serif",
+                fontWeight: "700",
+                fontSize: "12px",
+              }}
+              to="/cart"
+            >
+              <Button
+                key={2}
+                style={{ color: "orange", marginRight: "30px" }}
               >
                 <ShoppingCartIcon fontSize="small" /> {cartItems.length}
-              </Link>
-            </Button>
+              </Button>
+            </Link>
           </Box>
         </Toolbar>
       </AppBar>

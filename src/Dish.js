@@ -7,9 +7,13 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import React from "react";
+import Box from "@mui/material/Box";
+import RemoveIcon from "@mui/icons-material/Remove";
+import AddIcon from "@mui/icons-material/Add";
+import IconButton from "@mui/material/IconButton";
 import { AppContext } from "./App";
 function Dish({ dish }) {
-  const { addToCart } = React.useContext(AppContext);
+  const { addToCart, cartItems, removeFromCart } = React.useContext(AppContext);
   const { id, imageUrl, name, nonVeg, price } = dish;
   return (
     <Grid item xs={3}>
@@ -37,17 +41,49 @@ function Dish({ dish }) {
             }}
             size="medium"
           >
-            
             ${price}
           </Button>
-          <Button
-            onClick={() => { addToCart(id) }}
-            style={{ marginLeft: "20%" }}
-            variant="outlined"
-            color="success"
-          >
-            Add
-          </Button>
+          {cartItems.find((x) => x.id === id)?.quantity > 0 ? (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                pl: 1,
+                pb: 1,
+              }}
+              style={{ marginLeft: "-4%" }}
+            >
+              <IconButton
+                onClick={() => {
+                  removeFromCart(id);
+                }}
+              >
+                <RemoveIcon />
+              </IconButton>
+
+              <Button variant="outlined">
+                {cartItems.find((x) => x.id === id).quantity}
+              </Button>
+              <IconButton
+                onClick={() => {
+                  addToCart(id);
+                }}
+              >
+                <AddIcon />\q
+              </IconButton>
+            </Box>
+          ) : (
+            <Button
+              onClick={() => {
+                addToCart(id);
+              }}
+              style={{ marginLeft: "20%" }}
+              variant="outlined"
+              color="success"
+            >
+              Add
+            </Button>
+          )}
         </CardActions>
       </Card>
     </Grid>
