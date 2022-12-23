@@ -5,12 +5,12 @@ import Restaurant from "./Restaurant";
 const url = "http://localhost:3080/restaurants";
 
 function Restaurants() {
-  const [data, setData] = React.useState([]);
+  const [restaurants, setRestaurants] = React.useState([]);
   const fetchData = () => {
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        setData(data);
+        setRestaurants(data);
       });
   };
   React.useEffect(() => {
@@ -26,12 +26,12 @@ function Restaurants() {
           borderBottom: "1px solid lightgrey",
         }}
       >
-        {data.length} restaurants
+        {restaurants.length} restaurants
       </h1>
 
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={3}>
-          {data.map((restaurant) => {
+          {restaurants.map((restaurant) => {
             return <Restaurant key={restaurant.id} restaurant={restaurant} />;
           })}
         </Grid>
