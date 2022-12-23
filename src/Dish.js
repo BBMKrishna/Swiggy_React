@@ -69,7 +69,7 @@ function Dish({ dish }) {
                   addToCart(id);
                 }}
               >
-                <AddIcon />\q
+                <AddIcon />
               </IconButton>
             </Box>
           ) : (
