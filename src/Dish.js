@@ -41,7 +41,7 @@ function Dish({ dish }) {
             }}
             size="medium"
           >
-            ${price}
+            ₹{price}
           </Button>
           {cartItems.find((x) => x.id === id)?.quantity > 0 ? (
             <Box
