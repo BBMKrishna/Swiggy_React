@@ -7,21 +7,17 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import CardMedia from "@mui/material/CardMedia";
 import { useParams } from "react-router-dom";
-function Orderitems() {
-  const { orderItems, setOrderItems, dishes, setDishes } =
+function OrderItems() {
+  const { orderItems, setOrderItems, dishes, setDishes, fetchAPI } =
     React.useContext(AppContext);
 
   const { orderId } = useParams();
   React.useEffect(() => {
-    fetch(`http://localhost:3080/orders/${orderId}/orderitems`)
-      .then((res) => res.json())
-      .then((data) => {
-        setOrderItems(data);
-      });
-    fetch("http://localhost:3080/dishes")
-      .then((res) => res.json())
-      .then((data) => setDishes(data));
-  }, [orderId, setDishes, setOrderItems]);
+    fetchAPI(`orders/${orderId}/orderitems`, setOrderItems);
+  }, [fetchAPI, orderId, setOrderItems]);
+  React.useEffect(() => {
+    fetchAPI("dishes", setDishes);
+  }, [fetchAPI, setDishes]);
   let total = 0;
   return (
     <div className="container">
@@ -107,4 +103,4 @@ function Orderitems() {
     </div>
   );
 }
-export default Orderitems;
+export default OrderItems;

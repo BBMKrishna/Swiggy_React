@@ -5,7 +5,7 @@ import SharedLayout from "./pages/SharedLayout";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Cart from "./Cart";
 import Order from "./Order";
-import Orderitems from "./Orderitems";
+import OrderItems from "./OrderItems";
 export const AppContext = React.createContext();
 function App() {
   const [cartItems, setCartItems] = React.useState([]);
@@ -44,7 +44,8 @@ function App() {
       setCartItems(newItem);
     }
   }
-  function total() {
+  function total(cartItems) {
+
     var total = 0;
     cartItems.forEach((item) => (total += item.quantity * item.price));
     return total.toFixed(2);
@@ -57,17 +58,16 @@ function App() {
       },
       method: "POST",
       body: JSON.stringify({ orderItems: itemsList }),
-    })
-      .then(function (res) {
-        setDishes([]);
-        setCartItems([]);
-        console.log(res);
-      })
-      .catch(function (res) {
-        console.log(res);
-      });
+    }).then(() => {
+      setDishes([]);
+      setCartItems([]);
+    });
   }
-
+  function fetchAPI(path, setFunction) {
+    fetch(`http://localhost:3080/` + path)
+      .then((res) => res.json())
+      .then((data) => setFunction(data));
+  }
   return (
     <>
       <AppContext.Provider
@@ -84,6 +84,7 @@ function App() {
           orderItems,
           setOrderItems,
           checkout,
+          fetchAPI
         }}
       >
         <BrowserRouter>
@@ -98,7 +99,7 @@ function App() {
               <Route path="orders" element={<Order />} />
               <Route
                 path="orders/:orderId/orderitems"
-                element={<Orderitems />}
+                element={<OrderItems />}
               />
             </Route>
           </Routes>

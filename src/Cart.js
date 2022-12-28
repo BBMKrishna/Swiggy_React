@@ -14,6 +14,7 @@ import Button from "@mui/material/Button";
 function Cart() {
   const { cartItems, addToCart, removeFromCart, total, checkout } =
     React.useContext(AppContext);
+  const totalAmount = React.useMemo(() => total(cartItems), [cartItems, total]);
   return (
     <div className="container">
       <h1
@@ -93,7 +94,7 @@ function Cart() {
         }}
       >
         <h2>
-          Total - ₹ {total()}
+          Total - ₹ {totalAmount}
           {cartItems.length > 0 && (
             <Button
               variant="outlined"
