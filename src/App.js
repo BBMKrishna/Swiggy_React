@@ -7,6 +7,12 @@ import Cart from "./Cart";
 import Order from "./Order";
 import OrderItems from "./OrderItems";
 export const AppContext = React.createContext();
+
+export async function fetchAPI(path) {
+  const res = await fetch(`http://localhost:3080/` + path);
+  return await res.json();
+}
+
 function App() {
   const [cartItems, setCartItems] = React.useState([]);
   const [dishes, setDishes] = React.useState([]);
@@ -45,7 +51,6 @@ function App() {
     }
   }
   function total(cartItems) {
-
     var total = 0;
     cartItems.forEach((item) => (total += item.quantity * item.price));
     return total.toFixed(2);
@@ -63,10 +68,8 @@ function App() {
       setCartItems([]);
     });
   }
-  function fetchAPI(path, setFunction) {
-    fetch(`http://localhost:3080/` + path)
-      .then((res) => res.json())
-      .then((data) => setFunction(data));
+  function fetchAPI(path) {
+    fetch(`http://localhost:3080/` + path).then((res) => res.json());
   }
   return (
     <>
@@ -84,7 +87,7 @@ function App() {
           orderItems,
           setOrderItems,
           checkout,
-          fetchAPI
+          fetchAPI,
         }}
       >
         <BrowserRouter>

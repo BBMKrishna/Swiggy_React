@@ -32,7 +32,7 @@ function Cart() {
           {cartItems.map((item) => {
             const { id, imageUrl, name, price, quantity } = item;
             return (
-              <Card
+              <Card key={id}
                 className="card"
                 style={{ border: " 1px solid grey" }}
                 sx={{ display: "flex", margin: 1 }}
