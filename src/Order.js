@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 import { Link } from "react-router-dom";
 
-function keyBy(arr, key) {
+function groupBy(arr, key) {
   return arr.reduce((acc, item) => {
     acc[item[key]] ? acc[item[key]].push(item) : (acc[item[key]] = [item]);
     return acc;
@@ -18,7 +18,7 @@ function keyBy(arr, key) {
 async function fetch() {
   let orders = await fetchAPI(`orders`);
   const orderItems = await fetchAPI(`orderItems`);
-  const orderitemsLengthByOrderId = keyBy(orderItems, "orderId");
+  const orderitemsLengthByOrderId = groupBy(orderItems, "orderId");
   const ordersWithItemsLength = orders.map((order) => {
     return {
       ...order,
