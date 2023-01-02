@@ -5,14 +5,12 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import { AppContext } from "./../App";
-import HomeIcon from "@mui/icons-material/Home";
 const drawerWidth = 240;
 function DrawerAppBar(props) {
   const { cartItems } = React.useContext(AppContext);
@@ -85,9 +83,7 @@ function DrawerAppBar(props) {
               }}
               to="/"
             >
-              <Button key={1} style={{ color: "orange" }}>
-                <HomeIcon fontSize="small" />
-              </Button>
+              <Button style={{ color: "orange" }}>Home</Button>
             </Link>
             <Link
               style={{
@@ -99,11 +95,23 @@ function DrawerAppBar(props) {
               }}
               to="/cart"
             >
-              <Button
-                key={2}
-                style={{ color: "orange", marginRight: "30px" }}
-              >
-                <ShoppingCartIcon fontSize="small" /> {cartItems.length}
+              <Button style={{ color: "orange"}}>
+                Cart
+                {cartItems.length > 0 && ` (${cartItems.length})`}
+              </Button>
+            </Link>
+            <Link
+              style={{
+                textDecoration: "none",
+                color: "orange",
+                fontFamily: "san-serif",
+                fontWeight: "700",
+                fontSize: "12px",
+              }}
+              to="/orders"
+            >
+              <Button style={{ color: "orange", marginRight: "30px" }}>
+                orders
               </Button>
             </Link>
           </Box>

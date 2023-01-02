@@ -4,12 +4,21 @@ import Dishes from "./Dishes";
 import SharedLayout from "./pages/SharedLayout";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Cart from "./Cart";
+import Order from "./Order";
+import OrderItems from "./OrderItems";
 export const AppContext = React.createContext();
+
+export async function fetchAPI(path) {
+  const res = await fetch(`http://localhost:3080/` + path);
+  return await res.json();
+}
+
 function App() {
   const [cartItems, setCartItems] = React.useState([]);
   const [dishes, setDishes] = React.useState([]);
+  const [orders, setOrders] = React.useState([]);
+  const [orderItems, setOrderItems] = React.useState([]);
   function addToCart(id) {
-    console.log(id);
     if (cartItems.find((x) => x.id === id) === undefined) {
       let dishesIndex = dishes.findIndex((item) => item.id === id);
       let newItem = dishes[dishesIndex];
@@ -28,7 +37,6 @@ function App() {
     }
   }
   function removeFromCart(id) {
-    console.log(id);
     if (cartItems.find((x) => x.id === id).quantity > 1) {
       var newItem = cartItems.map((item) => {
         if (item.id === id) {
@@ -42,12 +50,27 @@ function App() {
       setCartItems(newItem);
     }
   }
-  function total() {
+  function total(cartItems) {
     var total = 0;
     cartItems.forEach((item) => (total += item.quantity * item.price));
-    return total.toFixed(2)
+    return total.toFixed(2);
   }
-
+  function checkout(itemsList) {
+    fetch("http://localhost:3080/orders", {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify({ orderItems: itemsList }),
+    }).then(() => {
+      setDishes([]);
+      setCartItems([]);
+    });
+  }
+  function fetchAPI(path) {
+    fetch(`http://localhost:3080/` + path).then((res) => res.json());
+  }
   return (
     <>
       <AppContext.Provider
@@ -58,7 +81,13 @@ function App() {
           setDishes,
           addToCart,
           removeFromCart,
-          total
+          total,
+          orders,
+          setOrders,
+          orderItems,
+          setOrderItems,
+          checkout,
+          fetchAPI,
         }}
       >
         <BrowserRouter>
@@ -70,6 +99,11 @@ function App() {
                 element={<Dishes />}
               />
               <Route path="cart" element={<Cart />} />
+              <Route path="orders" element={<Order />} />
+              <Route
+                path="orders/:orderId/orderitems"
+                element={<OrderItems />}
+              />
             </Route>
           </Routes>
         </BrowserRouter>

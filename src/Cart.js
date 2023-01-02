@@ -12,9 +12,9 @@ import AddIcon from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
 
 function Cart() {
-  const { cartItems, addToCart, removeFromCart, total } =
+  const { cartItems, addToCart, removeFromCart, total, checkout } =
     React.useContext(AppContext);
-  let Total = total();
+  const totalAmount = React.useMemo(() => total(cartItems), [cartItems, total]);
   return (
     <div className="container">
       <h1
@@ -32,7 +32,7 @@ function Cart() {
           {cartItems.map((item) => {
             const { id, imageUrl, name, price, quantity } = item;
             return (
-              <Card
+              <Card key={id}
                 className="card"
                 style={{ border: " 1px solid grey" }}
                 sx={{ display: "flex", margin: 1 }}
@@ -85,8 +85,28 @@ function Cart() {
           })}
         </Grid>
       </Box>
-      <div style={{ position: "fixed", bottom: "10px", right: "60px" }}>
-        <h2>Total - ₹ {Total}</h2>
+      <div
+        style={{
+          position: "fixed",
+          bottom: "10px",
+          right: "700px",
+          align: "center",
+        }}
+      >
+        <h2>
+          Total - ₹ {totalAmount}
+          {cartItems.length > 0 && (
+            <Button
+              variant="outlined"
+              style={{ marginLeft: "20px", color: "green" }}
+              onClick={() => {
+                checkout(cartItems);
+              }}
+            >
+              Order Items
+            </Button>
+          )}
+        </h2>
       </div>
     </div>
   );
