@@ -5,15 +5,19 @@ import Box from "@mui/material/Box";
 import Dish from "./Dish";
 import { AppContext } from "./App";
 const Dishes = () => {
-  const { dishes, setDishes } = React.useContext(AppContext);
+  const { dishes, setDishes, token } = React.useContext(AppContext);
   const { restaurantId } = useParams();
   useEffect(() => {
-    fetch(`http://localhost:3080/restaurants/${restaurantId}/dishes`)
+    fetch(`http://localhost:3080/restaurants/${restaurantId}/dishes`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         setDishes(data);
       });
-  }, [restaurantId, setDishes]);
+  }, [restaurantId, setDishes, token]);
 
   return (
     <>
