@@ -1,4 +1,5 @@
-import { AppContext, fetchAPI } from "./App";
+import { AppContext } from "./App";
+import {fetchApiGet} from "./FetchAPI"
 import React from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -16,8 +17,8 @@ function groupBy(arr, key) {
 }
 
 async function fetch() {
-  let orders = await fetchAPI(`orders`);
-  const orderItems = await fetchAPI(`orderItems`);
+  let orders = await fetchApiGet(`orders`);
+  const orderItems = await fetchApiGet(`orderItems`);
   const orderitemsLengthByOrderId = groupBy(orderItems, "orderId");
   const ordersWithItemsLength = orders.map((order) => {
     return {

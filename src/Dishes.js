@@ -4,19 +4,14 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Dish from "./Dish";
 import { AppContext } from "./App";
+import { fetchApiGet } from "./FetchAPI";
 const Dishes = () => {
   const { dishes, setDishes, token } = React.useContext(AppContext);
   const { restaurantId } = useParams();
   useEffect(() => {
-    fetch(`http://localhost:3080/restaurants/${restaurantId}/dishes`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setDishes(data);
-      });
+    fetchApiGet(`restaurants/${restaurantId}/dishes`).then((data) => {
+      setDishes(data);
+    });
   }, [restaurantId, setDishes, token]);
 
   return (

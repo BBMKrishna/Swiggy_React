@@ -9,18 +9,8 @@ import Order from "./Order";
 import OrderItems from "./OrderItems";
 import Signup from "./Signup";
 import Login from "./Login";
+import { fetchApiPost, fetchApiPostUnauth } from "./FetchAPI";
 export const AppContext = React.createContext();
-
-export async function fetchAPI(path) {
-  const token = localStorage.getItem("token");
-  const res = await fetch(`http://localhost:3080/` + path, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  return await res.json();
-}
-
 function App() {
   const [cartItems, setCartItems] = React.useState([]);
   const [dishes, setDishes] = React.useState([]);
@@ -68,45 +58,21 @@ function App() {
   }
 
   function checkout(itemsList) {
-    fetch("http://localhost:3080/orders", {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      method: "POST",
-      body: JSON.stringify({ orderItems: itemsList }),
-    }).then(() => {
+    fetchApiPost("orders", { orderItems: itemsList }).then(() => {
       setDishes([]);
       setCartItems([]);
     });
   }
-  function fetchAPI(path) {
-    fetch(`http://localhost:3080/` + path, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }).then((res) => res.json());
-  }
+
   function login(e) {
     e.preventDefault();
     const { phone, password } = user;
     if (phone && password !== "") {
-      fetch("http://localhost:3080/login", {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify({ phone, password }),
-      })
-        .then((res) => res.json())
+      fetchApiPostUnauth("login", { phone, password })
         .then((data) => {
           if (data) {
             localStorage.setItem("token", data.accessToken);
-            setToken((state) => {
-              return (state = data.accessToken);
-            });
+            setToken(data.accessToken);
           }
         })
         .then(() => {
@@ -121,14 +87,7 @@ function App() {
     e.preventDefault();
     const { name, phone, password } = user;
     if (name && phone && password !== "") {
-      fetch("http://localhost:3080/signup", {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify({ name, phone, password }),
-      }).then(() => {
+      fetchApiPostUnauth("signup", { name, phone, password }).then(() => {
         setUser({ name: "", phone: "", password: "" });
       });
     } else {
@@ -157,7 +116,6 @@ function App() {
           orderItems,
           setOrderItems,
           checkout,
-          fetchAPI,
           token,
           setToken,
           formChange,
@@ -170,7 +128,7 @@ function App() {
       >
         <BrowserRouter>
           <Routes>
-            {token === null || token === "" || token === "undefined" ? (
+            {token === null || token === "" || token === undefined ? (
               <Route path="/" element={<SharedLayoutLogin />}>
                 <Route index element={<Login />} />
                 <Route path="signup" element={<Signup />} />
