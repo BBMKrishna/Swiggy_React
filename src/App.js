@@ -94,11 +94,6 @@ function App() {
       return;
     }
   }
-  function formChange(e) {
-    setUser((prevState) => {
-      return { ...prevState, [e.target.name]: e.target.value };
-    });
-  }
 
   return (
     <>
@@ -118,12 +113,12 @@ function App() {
           checkout,
           token,
           setToken,
-          formChange,
           login,
           signup,
           user,
           loginPage,
           setLoginPage,
+          setUser,
         }}
       >
         <BrowserRouter>

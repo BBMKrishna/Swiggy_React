@@ -5,8 +5,13 @@ import Grid from "@mui/material/Grid";
 import { useNavigate } from "react-router-dom";
 function Login() {
   const navigate = useNavigate();
-  const { user, formChange, login } = React.useContext(AppContext);
+  const { user, setUser, login } = React.useContext(AppContext);
   const { phone, password } = user;
+  function formChange(e) {
+    setUser((prevState) => {
+      return { ...prevState, [e.target.name]: e.target.value };
+    });
+  }
   return (
     <Box>
       <Grid container spacing={2}>
@@ -40,7 +45,7 @@ function Login() {
             <br /> <br />
             <label>Password : </label>
             <input
-              type="text"
+              type="password"
               placeholder="enter your password"
               name="password"
               value={password}

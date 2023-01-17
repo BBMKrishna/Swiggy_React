@@ -5,8 +5,13 @@ import Grid from "@mui/material/Grid";
 import { useNavigate } from "react-router-dom";
 function Signup() {
   const navigate = useNavigate();
-  const { user, formChange, signup } = React.useContext(AppContext);
+  const { user, setUser, signup } = React.useContext(AppContext);
   const { name, phone, password } = user;
+  function formChange(e) {
+    setUser((prevState) => {
+      return { ...prevState, [e.target.name]: e.target.value };
+    });
+  }
   return (
     <Box>
       <Grid container spacing={2}>
