@@ -1,4 +1,5 @@
-import { AppContext, fetchAPI } from "./App";
+import { AppContext } from "./App";
+import { fetchApiGet } from "./FetchAPI";
 import React from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -15,8 +16,8 @@ function keyBy(arr, key) {
 }
 
 async function fetch(orderId) {
-  const orderItems = await fetchAPI(`orders/${orderId}/orderitems`);
-  const dishes = await fetchAPI(`dishes`);
+  const orderItems = await fetchApiGet(`orders/${orderId}/orderitems`);
+  const dishes = await fetchApiGet(`dishes`);
   const dishesById = keyBy(dishes, "id");
   const orderItemsWithDishes = orderItems.map((orderItem) => {
     return {

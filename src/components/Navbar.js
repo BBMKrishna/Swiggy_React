@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 import { AppContext } from "./../App";
 const drawerWidth = 240;
 function DrawerAppBar(props) {
-  const { cartItems } = React.useContext(AppContext);
+  const { cartItems, setToken } = React.useContext(AppContext);
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -32,7 +32,6 @@ function DrawerAppBar(props) {
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
-
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -95,7 +94,7 @@ function DrawerAppBar(props) {
               }}
               to="/cart"
             >
-              <Button style={{ color: "orange"}}>
+              <Button style={{ color: "orange" }}>
                 Cart
                 {cartItems.length > 0 && ` (${cartItems.length})`}
               </Button>
@@ -110,8 +109,29 @@ function DrawerAppBar(props) {
               }}
               to="/orders"
             >
-              <Button style={{ color: "orange", marginRight: "30px" }}>
-                orders
+              <Button style={{ color: "orange" }}>orders</Button>
+            </Link>
+            <Link
+              style={{
+                textDecoration: "none",
+                color: "orange",
+                fontFamily: "san-serif",
+                fontWeight: "700",
+                fontSize: "12px",
+              }}
+              to="/"
+            >
+              <Button
+                style={{
+                  color: "orange",
+                  marginRight: "30px",
+                }}
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  setToken(null);
+                }}
+              >
+                Logout
               </Button>
             </Link>
           </Box>

@@ -2,22 +2,23 @@ import Restaurants from "./Restaurants";
 import React from "react";
 import Dishes from "./Dishes";
 import SharedLayout from "./pages/SharedLayout";
+import SharedLayoutLogin from "./pages/SharedLayoutLogin";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Cart from "./Cart";
 import Order from "./Order";
 import OrderItems from "./OrderItems";
+import Signup from "./Signup";
+import Login from "./Login";
+import { fetchApiPost, fetchApiPostUnauth } from "./FetchAPI";
 export const AppContext = React.createContext();
-
-export async function fetchAPI(path) {
-  const res = await fetch(`http://localhost:3080/` + path);
-  return await res.json();
-}
-
 function App() {
   const [cartItems, setCartItems] = React.useState([]);
   const [dishes, setDishes] = React.useState([]);
   const [orders, setOrders] = React.useState([]);
   const [orderItems, setOrderItems] = React.useState([]);
+  const [token, setToken] = React.useState(localStorage.getItem("token"));
+  const [user, setUser] = React.useState({ name: "", phone: "", password: "" });
+  const [loginPage, setLoginPage] = React.useState(true);
   function addToCart(id) {
     if (cartItems.find((x) => x.id === id) === undefined) {
       let dishesIndex = dishes.findIndex((item) => item.id === id);
@@ -55,22 +56,45 @@ function App() {
     cartItems.forEach((item) => (total += item.quantity * item.price));
     return total.toFixed(2);
   }
+
   function checkout(itemsList) {
-    fetch("http://localhost:3080/orders", {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify({ orderItems: itemsList }),
-    }).then(() => {
+    fetchApiPost("orders", { orderItems: itemsList }).then(() => {
       setDishes([]);
       setCartItems([]);
     });
   }
-  function fetchAPI(path) {
-    fetch(`http://localhost:3080/` + path).then((res) => res.json());
+
+  function login(e) {
+    e.preventDefault();
+    const { phone, password } = user;
+    if (phone && password !== "") {
+      fetchApiPostUnauth("login", { phone, password })
+        .then((data) => {
+          if (data) {
+            localStorage.setItem("token", data.accessToken);
+            setToken(data.accessToken);
+          }
+        })
+        .then(() => {
+          setUser({ name: "", phone: "", password: "" });
+        })
+        .catch((err) => console.log(err));
+    } else {
+      return;
+    }
   }
+  function signup(e) {
+    e.preventDefault();
+    const { name, phone, password } = user;
+    if (name && phone && password !== "") {
+      fetchApiPostUnauth("signup", { name, phone, password }).then(() => {
+        setUser({ name: "", phone: "", password: "" });
+      });
+    } else {
+      return;
+    }
+  }
+
   return (
     <>
       <AppContext.Provider
@@ -87,24 +111,38 @@ function App() {
           orderItems,
           setOrderItems,
           checkout,
-          fetchAPI,
+          token,
+          setToken,
+          login,
+          signup,
+          user,
+          loginPage,
+          setLoginPage,
+          setUser,
         }}
       >
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<SharedLayout />}>
-              <Route index element={<Restaurants />} />
-              <Route
-                path="restaurants/:restaurantId/dishes"
-                element={<Dishes />}
-              />
-              <Route path="cart" element={<Cart />} />
-              <Route path="orders" element={<Order />} />
-              <Route
-                path="orders/:orderId/orderitems"
-                element={<OrderItems />}
-              />
-            </Route>
+            {token === null || token === "" || token === undefined ? (
+              <Route path="/" element={<SharedLayoutLogin />}>
+                <Route index element={<Login />} />
+                <Route path="signup" element={<Signup />} />
+              </Route>
+            ) : (
+              <Route path="/" element={<SharedLayout />}>
+                <Route index element={<Restaurants />} />
+                <Route
+                  path="restaurants/:restaurantId/dishes"
+                  element={<Dishes />}
+                />
+                <Route path="cart" element={<Cart />} />
+                <Route path="orders" element={<Order />} />
+                <Route
+                  path="orders/:orderId/orderitems"
+                  element={<OrderItems />}
+                />
+              </Route>
+            )}
           </Routes>
         </BrowserRouter>
       </AppContext.Provider>

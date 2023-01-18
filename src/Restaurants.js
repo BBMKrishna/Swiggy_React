@@ -2,16 +2,14 @@ import React from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Restaurant from "./Restaurant";
-const url = "http://localhost:3080/restaurants";
+import { fetchApiGet } from "./FetchAPI";
 
 function Restaurants() {
   const [restaurants, setRestaurants] = React.useState([]);
   const fetchData = () => {
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => {
-        setRestaurants(data);
-      });
+    fetchApiGet("restaurants").then((data) => {
+      setRestaurants(data);
+    });
   };
   React.useEffect(() => {
     fetchData();
