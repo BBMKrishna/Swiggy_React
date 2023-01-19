@@ -64,21 +64,20 @@ function App() {
     });
   }
 
-  function login(e) {
+  async function login(e) {
     e.preventDefault();
     const { phone, password } = user;
     if (phone && password !== "") {
-      fetchApiPostUnauth("login", { phone, password })
-        .then((data) => {
-          if (data) {
-            localStorage.setItem("token", data.accessToken);
-            setToken(data.accessToken);
-          }
-        })
-        .then(() => {
+      try {
+        const data = await fetchApiPostUnauth("login", { phone, password });
+        if (data) {
+          localStorage.setItem("token", data.accessToken);
+          setToken(data.accessToken);
           setUser({ name: "", phone: "", password: "" });
-        })
-        .catch((err) => console.log(err));
+        }
+      } catch (err) {
+        console.log(err);
+      }
     } else {
       return;
     }

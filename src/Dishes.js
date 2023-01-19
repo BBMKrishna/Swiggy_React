@@ -9,9 +9,9 @@ const Dishes = () => {
   const { dishes, setDishes, token } = React.useContext(AppContext);
   const { restaurantId } = useParams();
   useEffect(() => {
-    fetchApiGet(`restaurants/${restaurantId}/dishes`).then((data) => {
-      setDishes(data);
-    });
+    fetchApiGet(`restaurants/${restaurantId}/dishes`).then((data) =>
+      setDishes(data)
+    );
   }, [restaurantId, setDishes, token]);
 
   return (

@@ -1,36 +1,34 @@
+import axios from "axios";
 const header = `http://localhost:3080/`;
 const token = localStorage.getItem("token");
-
+let url;
 async function fetchApiGet(path) {
-  const res = await fetch(header + path, {
+  url = header + path;
+  const res = await axios.get(url, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
-  return await res.json();
+  return await res.data;
 }
 async function fetchApiPost(path, body) {
-  await fetch(header + path, {
+  url = header + path;
+  await axios.post(url, body, {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    method: "POST",
-    body: JSON.stringify(body),
   });
 }
-
 async function fetchApiPostUnauth(path, body) {
-  const res = await fetch(header + path, {
+  url = header + path;
+  const res = await axios.post(url, body, {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    method: "POST",
-    body: JSON.stringify(body),
   });
-  return await res.json();
+  return await res.data;
 }
-
 export { fetchApiGet, fetchApiPost, fetchApiPostUnauth };
