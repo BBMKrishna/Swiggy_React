@@ -120,25 +120,11 @@ const homeSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getDishes.pending, (state) => {
-        state.isLoading = true;
-      })
       .addCase(getDishes.fulfilled, (state, action) => {
-        state.isLoading = false;
         state.dishes = action.payload;
       })
-      .addCase(getDishes.rejected, (state) => {
-        state.isLoading = false;
-      })
-      .addCase(getRestaurants.pending, (state) => {
-        state.isLoading = true;
-      })
       .addCase(getRestaurants.fulfilled, (state, action) => {
-        state.isLoading = false;
         state.restaurants = action.payload;
-      })
-      .addCase(getRestaurants.rejected, (state) => {
-        state.isLoading = false;
       })
       .addCase(setOrders.fulfilled, (state, action) => {
         state.cartItems = [];
