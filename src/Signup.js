@@ -1,17 +1,21 @@
 import React from "react";
-import { AppContext } from "./App";
+// import { AppContext } from "./App";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { formChange } from "./features/home/appSlice";
 function Signup() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, setUser, signup } = React.useContext(AppContext);
+  const { user, signup } = useSelector((store) => store.home);
+  // const { signup } = React.useContext(AppContext);
   const { name, phone, password } = user;
-  function formChange(e) {
-    setUser((prevState) => {
-      return { ...prevState, [e.target.name]: e.target.value };
-    });
-  }
+  // function formChange(e) {
+  //   setUser((prevState) => {
+  //     return { ...prevState, [e.target.name]: e.target.value };
+  //   });
+  // }
   return (
     <Box>
       <Grid container spacing={2}>
@@ -30,7 +34,7 @@ function Signup() {
                 " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2)",
             }}
             onSubmit={(e) => {
-              signup(e);
+              dispatch(signup(e));
             }}
           >
             <label htmlFor="name">Username : </label>
@@ -39,7 +43,7 @@ function Signup() {
               placeholder="enter your Name"
               name="name"
               value={name}
-              onChange={(e) => formChange(e)}
+              onChange={(e) => dispatch(formChange(e))}
             ></input>
             <br />
             <br />
@@ -49,7 +53,7 @@ function Signup() {
               placeholder="enter your phone number"
               name="phone"
               value={phone}
-              onChange={(e) => formChange(e)}
+              onChange={(e) => dispatch(formChange(e))}
             ></input>
             <br /> <br />
             <label>Password :</label>
@@ -58,7 +62,7 @@ function Signup() {
               placeholder="enter your password"
               name="password"
               value={password}
-              onChange={(e) => formChange(e)}
+              onChange={(e) => dispatch(formChange(e))}
             ></input>
             <br /> <br />
             <button

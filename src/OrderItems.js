@@ -1,4 +1,3 @@
-import { AppContext } from "./App";
 import { fetchApiGet } from "./FetchAPI";
 import React from "react";
 import Grid from "@mui/material/Grid";
@@ -8,6 +7,8 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import CardMedia from "@mui/material/CardMedia";
 import { useParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { updateOrderItems } from "./features/home/appSlice";
 function keyBy(arr, key) {
   return arr.reduce((acc, item) => {
     acc[item[key]] = item;
@@ -32,16 +33,16 @@ async function fetch(orderId) {
 }
 
 function OrderItems() {
-  const { orderItems, setOrderItems, setDishes } = React.useContext(AppContext);
+  const { orderItems } = useSelector((store) => store.app);
+  const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(false);
   const { orderId } = useParams();
   React.useEffect(() => {
     fetch(orderId).then(({ dishes, orderItems }) => {
-      setDishes(dishes);
-      setOrderItems(orderItems);
+      dispatch(updateOrderItems({ dishes, orderItems }));
       setLoading(true);
     });
-  }, [setDishes, setOrderItems, orderId]);
+  }, [dispatch, orderId]);
 
   let total = 0;
   if (loading) {

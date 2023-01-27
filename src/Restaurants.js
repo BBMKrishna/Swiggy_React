@@ -2,17 +2,17 @@ import React from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Restaurant from "./Restaurant";
-import { fetchApiGet } from "./FetchAPI";
+import { useDispatch, useSelector } from "react-redux";
+import { getRestaurants } from "./features/home/appSlice";
 
 function Restaurants() {
-  const [restaurants, setRestaurants] = React.useState([]);
+  const dispatch = useDispatch();
+  const { restaurants } = useSelector((store) => store.app);
   const [loading, setLoading] = React.useState(false);
   React.useEffect(() => {
-    fetchApiGet("restaurants").then((data) => {
-      setRestaurants(data);
-      setLoading(true);
-    });
-  }, [setRestaurants]);
+    dispatch(getRestaurants());
+    setLoading(true);
+  }, [dispatch, setLoading]);
   if (loading) {
     return (
       <div className="container">
