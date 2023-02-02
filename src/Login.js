@@ -39,6 +39,7 @@ function Login() {
               if (phone && password !== "") {
                 try {
                   dispatch(logIn(user));
+                  setUser({ phone: "", password: "" });
                 } catch (err) {
                   console.log(err);
                 }

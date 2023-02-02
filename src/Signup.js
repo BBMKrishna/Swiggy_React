@@ -2,7 +2,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { useNavigate } from "react-router-dom";
-import { useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 import { signUp } from "./features/home/appSlice";
 function Signup() {
   const [user, setUser] = React.useState({ name: "", phone: "", password: "" });
@@ -38,6 +38,7 @@ function Signup() {
               if (name && phone && password !== "") {
                 try {
                   dispatch(signUp(user));
+                  setUser({ name: "", phone: "", password: "" });
                   setTimeout(() => navigate("/"), 4000);
                 } catch (err) {
                   console.log(err);
