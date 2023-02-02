@@ -33,7 +33,7 @@ async function fetch() {
 
 function Order() {
   const dispatch = useDispatch();
-  const { orders } = useSelector((store) => store.app);
+  const orders = useSelector((store) => store.app.orders);
   const [loading, setLoading] = React.useState(false);
   React.useEffect(() => {
     fetch().then((data) => {

@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getDishes } from "./features/home/appSlice";
 const Dishes = () => {
   const dispatch = useDispatch();
-  const { dishes } = useSelector((store) => store.app);
+  const dishes  = useSelector((store) => store.app.dishes);
   const { restaurantId } = useParams();
   useEffect(() => {
     dispatch(getDishes(restaurantId));

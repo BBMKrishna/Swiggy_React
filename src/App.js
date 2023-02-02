@@ -11,7 +11,7 @@ import Signup from "./Signup";
 import Login from "./Login";
 import { useSelector } from "react-redux";
 function App() {
-  const { token } = useSelector((store) => store.app);
+  const token = useSelector((store) => store.app.token);
   return (
     <>
       <BrowserRouter>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -11,15 +11,18 @@ import AddIcon from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
 import { useSelector, useDispatch } from "react-redux";
 import { setOrders } from "./features/home/appSlice";
-import { addToCart, removeFromCart } from "./features/home/appSlice";
+import {
+  addToCart,
+  removeFromCart,
+  totalAmount,
+} from "./features/home/appSlice";
 function Cart() {
   const dispatch = useDispatch();
-  const { cartItems } = useSelector((store) => store.app);
-  let total = React.useMemo(() => {
-    let total = 0;
-    cartItems.forEach((item) => (total += item.quantity * item.price));
-    return total;
-  }, [cartItems]);
+  const cartItems = useSelector((store) => store.app.cartItems);
+  const total = useSelector((store) => store.app.total);
+  useEffect(() => {
+    dispatch(totalAmount(cartItems));
+  }, [cartItems, dispatch]);
   return (
     <div className="container">
       <h1

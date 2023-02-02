@@ -33,7 +33,7 @@ async function fetch(orderId) {
 }
 
 function OrderItems() {
-  const { orderItems } = useSelector((store) => store.app);
+  const orderItems = useSelector((store) => store.app.orderItems);
   const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(false);
   const { orderId } = useParams();

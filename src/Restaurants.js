@@ -7,7 +7,7 @@ import { getRestaurants } from "./features/home/appSlice";
 
 function Restaurants() {
   const dispatch = useDispatch();
-  const { restaurants } = useSelector((store) => store.app);
+  const restaurants = useSelector((store) => store.app.restaurants);
   const [loading, setLoading] = React.useState(false);
   React.useEffect(() => {
     dispatch(getRestaurants());

@@ -12,8 +12,10 @@ import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { removeToken } from "../features/home/appSlice";
+import { useNavigate } from "react-router-dom";
 const drawerWidth = 240;
 function DrawerAppBar(props) {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { cartItems } = useSelector((store) => store.app);
   const { window } = props;
@@ -130,6 +132,7 @@ function DrawerAppBar(props) {
                 }}
                 onClick={() => {
                   localStorage.removeItem("token");
+                  navigate("/")
                   dispatch(removeToken());
                 }}
               >

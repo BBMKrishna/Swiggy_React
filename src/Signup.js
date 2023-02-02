@@ -1,21 +1,20 @@
 import React from "react";
-// import { AppContext } from "./App";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { formChange } from "./features/home/appSlice";
+import { useDispatch} from "react-redux";
+import { signUp } from "./features/home/appSlice";
 function Signup() {
+  const [user, setUser] = React.useState({ name: "", phone: "", password: "" });
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, signup } = useSelector((store) => store.home);
-  // const { signup } = React.useContext(AppContext);
   const { name, phone, password } = user;
-  // function formChange(e) {
-  //   setUser((prevState) => {
-  //     return { ...prevState, [e.target.name]: e.target.value };
-  //   });
-  // }
+  function formChange(event) {
+    event.preventDefault();
+    setUser((prevState) => {
+      return { ...prevState, [event.target.name]: event.target.value };
+    });
+  }
   return (
     <Box>
       <Grid container spacing={2}>
@@ -34,7 +33,18 @@ function Signup() {
                 " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2)",
             }}
             onSubmit={(e) => {
-              dispatch(signup(e));
+              e.preventDefault();
+              const { name, phone, password } = user;
+              if (name && phone && password !== "") {
+                try {
+                  dispatch(signUp(user));
+                  setTimeout(() => navigate("/"), 4000);
+                } catch (err) {
+                  console.log(err);
+                }
+              } else {
+                return;
+              }
             }}
           >
             <label htmlFor="name">Username : </label>
@@ -43,7 +53,7 @@ function Signup() {
               placeholder="enter your Name"
               name="name"
               value={name}
-              onChange={(e) => dispatch(formChange(e))}
+              onChange={(e) => formChange(e)}
             ></input>
             <br />
             <br />
@@ -53,7 +63,7 @@ function Signup() {
               placeholder="enter your phone number"
               name="phone"
               value={phone}
-              onChange={(e) => dispatch(formChange(e))}
+              onChange={(e) => formChange(e)}
             ></input>
             <br /> <br />
             <label>Password :</label>
@@ -62,7 +72,7 @@ function Signup() {
               placeholder="enter your password"
               name="password"
               value={password}
-              onChange={(e) => dispatch(formChange(e))}
+              onChange={(e) => formChange(e)}
             ></input>
             <br /> <br />
             <button

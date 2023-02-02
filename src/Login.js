@@ -2,13 +2,19 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { formChange, logIn } from "./features/home/appSlice";
+import { useDispatch } from "react-redux";
+import { logIn } from "./features/home/appSlice";
 function Login() {
-  const { user } = useSelector((store) => store.app);
+  const [user, setUser] = React.useState({ phone: "", password: "" });
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { phone, password } = user;
+  function formChange(event) {
+    event.preventDefault();
+    setUser((prevState) => {
+      return { ...prevState, [event.target.name]: event.target.value };
+    });
+  }
   return (
     <Box>
       <Grid container spacing={2}>
@@ -29,7 +35,6 @@ function Login() {
             }}
             onSubmit={(e) => {
               e.preventDefault();
-              console.log(user);
               const { phone, password } = user;
               if (phone && password !== "") {
                 try {
@@ -48,7 +53,7 @@ function Login() {
               placeholder="enter your phone number"
               name="phone"
               value={phone}
-              onChange={(e) => dispatch(formChange(e))}
+              onChange={(e) => formChange(e)}
             ></input>
             <br /> <br />
             <label>Password : </label>
@@ -57,7 +62,7 @@ function Login() {
               placeholder="enter your password"
               name="password"
               value={password}
-              onChange={(e) => dispatch(formChange(e))}
+              onChange={(e) => formChange(e)}
             ></input>
             <br /> <br />
             <button

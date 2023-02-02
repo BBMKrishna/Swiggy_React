@@ -2,15 +2,13 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchApiPostUnauth, fetchApiGet, fetchApiPost } from "../../FetchAPI";
 
 const initialState = {
-  user: { name: "", phone: "", password: "" },
-  loginPage: true,
   cartItems: [],
   orders: [],
   orderItems: [],
-  value: 0,
   dishes: [],
   token: localStorage.getItem("token"),
   restaurants: [],
+  total: 0,
 };
 
 export const getDishes = createAsyncThunk(
@@ -40,8 +38,11 @@ export const getRestaurants = createAsyncThunk(
 export const logIn = createAsyncThunk("app/logIn", async (user) => {
   const { phone, password } = user;
   const accessKey = await fetchApiPostUnauth("login", { phone, password });
-  console.log(accessKey);
   return accessKey;
+});
+export const signUp = createAsyncThunk("app/signUp", async (user) => {
+  const { name, phone, password } = user;
+  await fetchApiPostUnauth("signup", { name, phone, password });
 });
 
 export const setOrders = createAsyncThunk(
@@ -54,25 +55,10 @@ export const setOrders = createAsyncThunk(
     }
   }
 );
-const homeSlice = createSlice({
+const appSlice = createSlice({
   name: "app",
   initialState,
   reducers: {
-    formChange: (state, action) => {
-      const event = action.payload.target;
-      state.user[event.name] = event.value;
-    },
-    signup: (state, action) => {
-      action.payload.preventDefault();
-      const { name, phone, password } = state.user;
-      if (name && phone && password !== "") {
-        fetchApiPostUnauth("signup", { name, phone, password }).then(() => {
-          state.user = { name: "", phone: "", password: "" };
-        });
-      } else {
-        return;
-      }
-    },
     addToCart: (state, action) => {
       const id = action.payload;
       if (state.cartItems.find((x) => x.id === id) === undefined) {
@@ -117,6 +103,11 @@ const homeSlice = createSlice({
       state.token = null;
       window.location.reload();
     },
+    totalAmount: (state, action) => {
+      let temp = 0;
+      action.payload.forEach((item) => (temp += item.quantity * item.price));
+      state.total = temp;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -126,27 +117,24 @@ const homeSlice = createSlice({
       .addCase(getRestaurants.fulfilled, (state, action) => {
         state.restaurants = action.payload;
       })
-      .addCase(setOrders.fulfilled, (state, action) => {
+      .addCase(setOrders.fulfilled, (state) => {
         state.cartItems = [];
         state.dishes = [];
       })
       .addCase(logIn.fulfilled, (state, action) => {
         localStorage.setItem("token", action.payload.accessToken);
         window.location.reload();
-      });
+      })
   },
 });
 export const {
-  formChange,
-  signup,
-  login,
-  clear,
   addToCart,
   removeFromCart,
   checkout,
   updateOrderItems,
   updateOrders,
   removeToken,
-} = homeSlice.actions;
+  totalAmount,
+} = appSlice.actions;
 
-export default homeSlice.reducer;
+export default appSlice.reducer;
