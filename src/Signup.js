@@ -39,7 +39,7 @@ function Signup() {
                 try {
                   dispatch(signUp(user));
                   setUser({ name: "", phone: "", password: "" });
-                  setTimeout(() => navigate("/"), 4000);
+                  navigate("/");
                 } catch (err) {
                   console.log(err);
                 }

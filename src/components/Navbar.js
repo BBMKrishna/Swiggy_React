@@ -17,7 +17,7 @@ const drawerWidth = 240;
 function DrawerAppBar(props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { cartItems } = useSelector((store) => store.app);
+  const cartItems = useSelector((store) => store.app.cartItems);
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -132,7 +132,7 @@ function DrawerAppBar(props) {
                 }}
                 onClick={() => {
                   localStorage.removeItem("token");
-                  navigate("/")
+                  navigate("/");
                   dispatch(removeToken());
                 }}
               >

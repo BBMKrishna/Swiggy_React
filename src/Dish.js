@@ -15,7 +15,7 @@ import { addToCart, removeFromCart } from "./features/home/appSlice";
 import { useDispatch, useSelector } from "react-redux";
 function Dish({ dish }) {
   const dispatch = useDispatch();
-  const { cartItems } = useSelector((store) => store.app);
+  const cartItems  = useSelector((store) => store.app.cartItems);
   const { id, imageUrl, name, nonVeg, price } = dish;
   return (
     <Grid item xs={3}>
