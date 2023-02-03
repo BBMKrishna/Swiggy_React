@@ -1,5 +1,4 @@
-import { AppContext } from "./App";
-import React from "react";
+import React, { useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -10,11 +9,20 @@ import Typography from "@mui/material/Typography";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
-
+import { useSelector, useDispatch } from "react-redux";
+import { setOrders } from "./features/home/appSlice";
+import {
+  addToCart,
+  removeFromCart,
+  totalAmount,
+} from "./features/home/appSlice";
 function Cart() {
-  const { cartItems, addToCart, removeFromCart, total, checkout } =
-    React.useContext(AppContext);
-  const totalAmount = React.useMemo(() => total(cartItems), [cartItems, total]);
+  const dispatch = useDispatch();
+  const cartItems = useSelector((store) => store.app.cartItems);
+  const total = useSelector((store) => store.app.total);
+  useEffect(() => {
+    dispatch(totalAmount(cartItems));
+  }, [cartItems, dispatch]);
   return (
     <div className="container">
       <h1
@@ -32,7 +40,8 @@ function Cart() {
           {cartItems.map((item) => {
             const { id, imageUrl, name, price, quantity } = item;
             return (
-              <Card key={id}
+              <Card
+                key={id}
                 className="card"
                 style={{ border: " 1px solid grey" }}
                 sx={{ display: "flex", margin: 1 }}
@@ -64,7 +73,7 @@ function Cart() {
                   >
                     <IconButton
                       onClick={() => {
-                        removeFromCart(id);
+                        dispatch(removeFromCart(id));
                       }}
                     >
                       <RemoveIcon />
@@ -73,7 +82,7 @@ function Cart() {
                     <Button variant="outlined">{quantity}</Button>
                     <IconButton
                       onClick={() => {
-                        addToCart(id);
+                        dispatch(addToCart(id));
                       }}
                     >
                       <AddIcon />
@@ -94,13 +103,13 @@ function Cart() {
         }}
       >
         <h2>
-          Total - ₹ {totalAmount}
+          Total - ₹{total}
           {cartItems.length > 0 && (
             <Button
               variant="outlined"
               style={{ marginLeft: "20px", color: "green" }}
               onClick={() => {
-                checkout(cartItems);
+                dispatch(setOrders(cartItems));
               }}
             >
               Order Items

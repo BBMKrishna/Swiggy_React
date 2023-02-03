@@ -10,10 +10,14 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
-import { AppContext } from "./../App";
+import { useSelector, useDispatch } from "react-redux";
+import { removeToken } from "../features/home/appSlice";
+import { useNavigate } from "react-router-dom";
 const drawerWidth = 240;
 function DrawerAppBar(props) {
-  const { cartItems, setToken } = React.useContext(AppContext);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const cartItems = useSelector((store) => store.app.cartItems);
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -128,7 +132,8 @@ function DrawerAppBar(props) {
                 }}
                 onClick={() => {
                   localStorage.removeItem("token");
-                  setToken(null);
+                  navigate("/");
+                  dispatch(removeToken());
                 }}
               >
                 Logout

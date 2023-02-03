@@ -3,16 +3,15 @@ import React, { useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Dish from "./Dish";
-import { AppContext } from "./App";
-import { fetchApiGet } from "./FetchAPI";
+import { useSelector, useDispatch } from "react-redux";
+import { getDishes } from "./features/home/appSlice";
 const Dishes = () => {
-  const { dishes, setDishes, token } = React.useContext(AppContext);
+  const dispatch = useDispatch();
+  const dishes  = useSelector((store) => store.app.dishes);
   const { restaurantId } = useParams();
   useEffect(() => {
-    fetchApiGet(`restaurants/${restaurantId}/dishes`).then((data) =>
-      setDishes(data)
-    );
-  }, [restaurantId, setDishes, token]);
+    dispatch(getDishes(restaurantId));
+  }, [dispatch, restaurantId]);
 
   return (
     <>
@@ -26,6 +25,7 @@ const Dishes = () => {
         >
           {dishes.length} dishes
         </h1>
+
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={3}>
             {dishes.map((dish) => {

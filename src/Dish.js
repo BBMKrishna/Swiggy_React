@@ -11,9 +11,11 @@ import Box from "@mui/material/Box";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import IconButton from "@mui/material/IconButton";
-import { AppContext } from "./App";
+import { addToCart, removeFromCart } from "./features/home/appSlice";
+import { useDispatch, useSelector } from "react-redux";
 function Dish({ dish }) {
-  const { addToCart, cartItems, removeFromCart } = React.useContext(AppContext);
+  const dispatch = useDispatch();
+  const cartItems  = useSelector((store) => store.app.cartItems);
   const { id, imageUrl, name, nonVeg, price } = dish;
   return (
     <Grid item xs={3}>
@@ -55,7 +57,7 @@ function Dish({ dish }) {
             >
               <IconButton
                 onClick={() => {
-                  removeFromCart(id);
+                  dispatch(removeFromCart(id));
                 }}
               >
                 <RemoveIcon />
@@ -66,7 +68,7 @@ function Dish({ dish }) {
               </Button>
               <IconButton
                 onClick={() => {
-                  addToCart(id);
+                  dispatch(addToCart(id));
                 }}
               >
                 <AddIcon />
@@ -75,7 +77,7 @@ function Dish({ dish }) {
           ) : (
             <Button
               onClick={() => {
-                addToCart(id);
+                dispatch(addToCart(id));
               }}
               style={{ marginLeft: "20%" }}
               variant="outlined"

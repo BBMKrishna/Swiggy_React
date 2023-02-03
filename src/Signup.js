@@ -1,15 +1,18 @@
 import React from "react";
-import { AppContext } from "./App";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { signUp } from "./features/home/appSlice";
 function Signup() {
+  const [user, setUser] = React.useState({ name: "", phone: "", password: "" });
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, setUser, signup } = React.useContext(AppContext);
   const { name, phone, password } = user;
-  function formChange(e) {
+  function formChange(event) {
+    event.preventDefault();
     setUser((prevState) => {
-      return { ...prevState, [e.target.name]: e.target.value };
+      return { ...prevState, [event.target.name]: event.target.value };
     });
   }
   return (
@@ -30,7 +33,19 @@ function Signup() {
                 " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2)",
             }}
             onSubmit={(e) => {
-              signup(e);
+              e.preventDefault();
+              const { name, phone, password } = user;
+              if (name && phone && password !== "") {
+                try {
+                  dispatch(signUp(user));
+                  setUser({ name: "", phone: "", password: "" });
+                  navigate("/");
+                } catch (err) {
+                  console.log(err);
+                }
+              } else {
+                return;
+              }
             }}
           >
             <label htmlFor="name">Username : </label>

@@ -1,15 +1,18 @@
 import React from "react";
-import { AppContext } from "./App";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logIn } from "./features/home/appSlice";
 function Login() {
+  const [user, setUser] = React.useState({ phone: "", password: "" });
   const navigate = useNavigate();
-  const { user, setUser, login } = React.useContext(AppContext);
+  const dispatch = useDispatch();
   const { phone, password } = user;
-  function formChange(e) {
+  function formChange(event) {
+    event.preventDefault();
     setUser((prevState) => {
-      return { ...prevState, [e.target.name]: e.target.value };
+      return { ...prevState, [event.target.name]: event.target.value };
     });
   }
   return (
@@ -31,7 +34,18 @@ function Login() {
                 " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
             }}
             onSubmit={(e) => {
-              login(e);
+              e.preventDefault();
+              const { phone, password } = user;
+              if (phone && password !== "") {
+                try {
+                  dispatch(logIn(user));
+                  setUser({ phone: "", password: "" });
+                } catch (err) {
+                  console.log(err);
+                }
+              } else {
+                return;
+              }
             }}
           >
             <label>Phone : </label>
@@ -45,7 +59,7 @@ function Login() {
             <br /> <br />
             <label>Password : </label>
             <input
-              type="password"
+              type="text"
               placeholder="enter your password"
               name="password"
               value={password}
