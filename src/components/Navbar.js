@@ -132,6 +132,7 @@ function DrawerAppBar(props) {
                 }}
                 onClick={() => {
                   localStorage.removeItem("token");
+                  localStorage.removeItem("persist:root");
                   navigate("/");
                   dispatch(removeToken());
                 }}
