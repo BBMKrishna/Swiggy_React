@@ -123,6 +123,7 @@ const appSlice = createSlice({
       })
       .addCase(logIn.fulfilled, (state, action) => {
         localStorage.setItem("token", action.payload.accessToken);
+        localStorage.removeItem("persist:root");
         window.location.reload();
       })
   },
