@@ -3,13 +3,20 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { logIn } from "./features/home/appSlice";
-function Login() {
-  const [user, setUser] = React.useState({ phone: "", password: "" });
+import { signUp } from "./features/home/appSlice";
+import { ThunkDispatch } from "@reduxjs/toolkit";
+
+  function Signup():JSX.Element{
+  interface User{
+    name: string
+    phone: string
+    password: string
+  }
+  const [user, setUser] = React.useState<User>({ name: "", phone: "", password: "" });
+ const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { phone, password } = user;
-  function formChange(event) {
+  const { name, phone, password } = user;
+  function formChange(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
     setUser((prevState) => {
       return { ...prevState, [event.target.name]: event.target.value };
@@ -28,18 +35,18 @@ function Login() {
               maxWidth: "350px",
               padding: "80px 20px",
               borderRadius: "8px",
-              border: "2px solid white",
               textAlign: "center",
               boxShadow:
-                " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+                " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2)",
             }}
             onSubmit={(e) => {
               e.preventDefault();
-              const { phone, password } = user;
-              if (phone && password !== "") {
+              const { name, phone, password } = user;
+              if (name && phone && password !== "") {
                 try {
-                  dispatch(logIn(user));
-                  setUser({ phone: "", password: "" });
+                  dispatch(signUp(user));
+                  setUser({ name: "", phone: "", password: "" });
+                  navigate("/");
                 } catch (err) {
                   console.log(err);
                 }
@@ -48,6 +55,16 @@ function Login() {
               }
             }}
           >
+            <label htmlFor="name">Username : </label>
+            <input
+              type="text"
+              placeholder="enter your Name"
+              name="name"
+              value={name}
+              onChange={(e) => formChange(e)}
+            ></input>
+            <br />
+            <br />
             <label>Phone : </label>
             <input
               type="tel"
@@ -57,7 +74,7 @@ function Login() {
               onChange={(e) => formChange(e)}
             ></input>
             <br /> <br />
-            <label>Password : </label>
+            <label>Password :</label>
             <input
               type="text"
               placeholder="enter your password"
@@ -71,19 +88,19 @@ function Login() {
               style={{
                 backgroundColor: "orange",
                 color: "black",
-                margin: "0 auto",
+                margin: "0 10px",
               }}
             >
-              Login
+              Sign Up
             </button>
             <h4>
-              New user?{" "}
+              Already a user?{" "}
               <span
                 onClick={() => {
-                  navigate("/signup");
+                  navigate("/");
                 }}
               >
-                signup
+                login
               </span>
             </h4>
           </form>
@@ -93,4 +110,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Signup;

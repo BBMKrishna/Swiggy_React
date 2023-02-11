@@ -9,8 +9,9 @@ import Avatar from "@mui/material/Avatar";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { updateOrders } from "./features/home/appSlice";
+import { Orders, StoreType } from "./interfaces";
 
-function groupBy(arr, key) {
+function groupBy(arr: any[], key: "orderId") {
   return arr.reduce((acc, item) => {
     acc[item[key]] ? acc[item[key]].push(item) : (acc[item[key]] = [item]);
     return acc;
@@ -21,7 +22,7 @@ async function fetch() {
   let orders = await fetchApiGet(`orders`);
   const orderItems = await fetchApiGet(`orderItems`);
   const orderitemsLengthByOrderId = groupBy(orderItems, "orderId");
-  const ordersWithItemsLength = orders.map((order) => {
+  const ordersWithItemsLength = orders.map((order:Orders) => {
     return {
       ...order,
       orderItemsLength: orderitemsLengthByOrderId[order.id].length,
@@ -33,7 +34,7 @@ async function fetch() {
 
 function Order() {
   const dispatch = useDispatch();
-  const orders = useSelector((store) => store.app.orders);
+  const orders = useSelector((store:StoreType) => store.app.orders);
   const [loading, setLoading] = React.useState(false);
   React.useEffect(() => {
     fetch().then((data) => {

@@ -5,13 +5,16 @@ import Box from "@mui/material/Box";
 import Dish from "./Dish";
 import { useSelector, useDispatch } from "react-redux";
 import { getDishes } from "./features/home/appSlice";
+import { StoreType } from "./interfaces";
+import { ThunkDispatch } from "@reduxjs/toolkit";
 const Dishes = () => {
-  const dispatch = useDispatch();
-  const dishes  = useSelector((store) => store.app.dishes);
-  const { restaurantId } = useParams();
+  const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
+  const dishes  = useSelector((store:StoreType) => store.app.dishes);
+  const { restaurantId }:any = useParams();
+    const restaurantID: number = parseInt(restaurantId);
   useEffect(() => {
-    dispatch(getDishes(restaurantId));
-  }, [dispatch, restaurantId]);
+    dispatch(getDishes(restaurantID));
+  }, [dispatch, restaurantID]);
 
   return (
     <>

@@ -9,18 +9,28 @@ import CardMedia from "@mui/material/CardMedia";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { updateOrderItems } from "./features/home/appSlice";
-function keyBy(arr, key) {
+import { OrderItems, StoreType } from "./interfaces";
+function keyBy(arr: any[], key: "id") {
   return arr.reduce((acc, item) => {
     acc[item[key]] = item;
     return acc;
   }, {});
 }
 
-async function fetch(orderId) {
+
+const Style = {
+  position: "fixed",
+  bottom: "10px",
+  right: "700px",
+  align: "center",
+} as React.CSSProperties;
+
+
+async function fetch(orderId: string | undefined) {
   const orderItems = await fetchApiGet(`orders/${orderId}/orderitems`);
   const dishes = await fetchApiGet(`dishes`);
   const dishesById = keyBy(dishes, "id");
-  const orderItemsWithDishes = orderItems.map((orderItem) => {
+  const orderItemsWithDishes = orderItems.map((orderItem:OrderItems) => {
     return {
       ...orderItem,
       dish: dishesById[orderItem.dishId],
@@ -32,8 +42,8 @@ async function fetch(orderId) {
   };
 }
 
-function OrderItems() {
-  const orderItems = useSelector((store) => store.app.orderItems);
+function OrderItem() {
+  const orderItems = useSelector((store:StoreType) => store.app.orderItems);
   const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(false);
   const { orderId } = useParams();
@@ -116,12 +126,7 @@ function OrderItems() {
           </Grid>
         </Box>
         <div
-          style={{
-            position: "fixed",
-            bottom: "10px",
-            right: "700px",
-            align: "center",
-          }}
+          style={Style}
         >
           <h2>Bill Amount - ₹{total} </h2>
         </div>
@@ -131,4 +136,4 @@ function OrderItems() {
     return <h1>Loading...</h1>;
   }
 }
-export default OrderItems;
+export default OrderItem;

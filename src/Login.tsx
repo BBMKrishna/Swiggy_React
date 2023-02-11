@@ -1,15 +1,16 @@
-import React from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { signUp } from "./features/home/appSlice";
-function Signup() {
-  const [user, setUser] = React.useState({ name: "", phone: "", password: "" });
-  const dispatch = useDispatch();
+import { logIn } from "./features/home/appSlice";
+import { ThunkDispatch } from "@reduxjs/toolkit";
+import React from "react";
+function Login() {
+  const [user, setUser] = React.useState({ phone: "", password: "" });
   const navigate = useNavigate();
-  const { name, phone, password } = user;
-  function formChange(event) {
+const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
+  const { phone, password } = user;
+  function formChange(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
     setUser((prevState) => {
       return { ...prevState, [event.target.name]: event.target.value };
@@ -28,18 +29,18 @@ function Signup() {
               maxWidth: "350px",
               padding: "80px 20px",
               borderRadius: "8px",
+              border: "2px solid white",
               textAlign: "center",
               boxShadow:
-                " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2)",
+                " 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
             }}
             onSubmit={(e) => {
               e.preventDefault();
-              const { name, phone, password } = user;
-              if (name && phone && password !== "") {
+              const { phone, password } = user;
+              if (phone && password !== "") {
                 try {
-                  dispatch(signUp(user));
-                  setUser({ name: "", phone: "", password: "" });
-                  navigate("/");
+                  dispatch(logIn(user));
+                  setUser({ phone: "", password: "" });
                 } catch (err) {
                   console.log(err);
                 }
@@ -48,16 +49,6 @@ function Signup() {
               }
             }}
           >
-            <label htmlFor="name">Username : </label>
-            <input
-              type="text"
-              placeholder="enter your Name"
-              name="name"
-              value={name}
-              onChange={(e) => formChange(e)}
-            ></input>
-            <br />
-            <br />
             <label>Phone : </label>
             <input
               type="tel"
@@ -67,7 +58,7 @@ function Signup() {
               onChange={(e) => formChange(e)}
             ></input>
             <br /> <br />
-            <label>Password :</label>
+            <label>Password : </label>
             <input
               type="text"
               placeholder="enter your password"
@@ -81,19 +72,19 @@ function Signup() {
               style={{
                 backgroundColor: "orange",
                 color: "black",
-                margin: "0 10px",
+                margin: "0 auto",
               }}
             >
-              Sign Up
+              Login
             </button>
             <h4>
-              Already a user?{" "}
+              New user?{" "}
               <span
                 onClick={() => {
-                  navigate("/");
+                  navigate("/signup");
                 }}
               >
-                login
+                signup
               </span>
             </h4>
           </form>
@@ -103,4 +94,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default Login;

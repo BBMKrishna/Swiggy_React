@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchApiPostUnauth, fetchApiGet, fetchApiPost } from "../../FetchAPI";
+import { CartItems, InitialState, User, LoginUser } from "../../interfaces";
 
-const initialState = {
+const initialState: InitialState = {
   cartItems: [],
   orders: [],
   orderItems: [],
@@ -13,7 +14,7 @@ const initialState = {
 
 export const getDishes = createAsyncThunk(
   "app/getDishes",
-  async (restaurantId) => {
+  async (restaurantId: number) => {
     try {
       const dish = await fetchApiGet(`restaurants/${restaurantId}/dishes`);
       return dish;
@@ -35,19 +36,19 @@ export const getRestaurants = createAsyncThunk(
   }
 );
 
-export const logIn = createAsyncThunk("app/logIn", async (user) => {
+export const logIn = createAsyncThunk("app/logIn", async (user: LoginUser) => {
   const { phone, password } = user;
   const accessKey = await fetchApiPostUnauth("login", { phone, password });
   return accessKey;
 });
-export const signUp = createAsyncThunk("app/signUp", async (user) => {
+export const signUp = createAsyncThunk("app/signUp", async (user: User) => {
   const { name, phone, password } = user;
   await fetchApiPostUnauth("signup", { name, phone, password });
 });
 
 export const setOrders = createAsyncThunk(
   "app/setOrders",
-  async (cartItems) => {
+  async (cartItems: CartItems[]) => {
     try {
       await fetchApiPost("orders", { orderItems: cartItems });
     } catch (err) {
@@ -59,8 +60,8 @@ const appSlice = createSlice({
   name: "app",
   initialState,
   reducers: {
-    addToCart: (state, action) => {
-      const id = action.payload;
+    addToCart: (state: InitialState, action) => {
+      const id: number = action.payload;
       if (state.cartItems.find((x) => x.id === id) === undefined) {
         let dishesIndex = state.dishes.findIndex((item) => item.id === id);
         let newItem = state.dishes[dishesIndex];
@@ -77,8 +78,11 @@ const appSlice = createSlice({
       }
     },
     removeFromCart: (state, action) => {
-      const id = action.payload;
-      if (state.cartItems.find((x) => x.id === id).quantity > 1) {
+      const id: number = action.payload;
+      let quantityMoreThanOne: any = state.cartItems.find(
+        (x) => x.id === id
+      )?.quantity;
+      if (quantityMoreThanOne > 1) {
         var newItem = state.cartItems.map((item) => {
           if (item.id === id) {
             item.quantity -= 1;
@@ -105,7 +109,9 @@ const appSlice = createSlice({
     },
     totalAmount: (state, action) => {
       let temp = 0;
-      action.payload.forEach((item) => (temp += item.quantity * item.price));
+      action.payload.forEach(
+        (item: CartItems) => (temp += item.quantity * item.price)
+      );
       state.total = temp;
     },
   },
@@ -125,13 +131,12 @@ const appSlice = createSlice({
         localStorage.setItem("token", action.payload.accessToken);
         localStorage.removeItem("persist:root");
         window.location.reload();
-      })
+      });
   },
 });
 export const {
   addToCart,
   removeFromCart,
-  checkout,
   updateOrderItems,
   updateOrders,
   removeToken,
