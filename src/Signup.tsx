@@ -4,12 +4,23 @@ import Grid from "@mui/material/Grid";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { signUp } from "./features/home/appSlice";
-function Signup() {
-  const [user, setUser] = React.useState({ name: "", phone: "", password: "" });
-  const dispatch = useDispatch();
+import { ThunkDispatch } from "@reduxjs/toolkit";
+
+function Signup(): JSX.Element {
+  interface User {
+    name: string;
+    phone: string;
+    password: string;
+  }
+  const [user, setUser] = React.useState<User>({
+    name: "",
+    phone: "",
+    password: "",
+  });
+  const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
   const navigate = useNavigate();
   const { name, phone, password } = user;
-  function formChange(event) {
+  function formChange(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
     setUser((prevState) => {
       return { ...prevState, [event.target.name]: event.target.value };

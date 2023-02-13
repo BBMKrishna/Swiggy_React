@@ -9,6 +9,7 @@ import Typography from "@mui/material/Typography";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
+import { StoreType } from "./interfaces";
 import { useSelector, useDispatch } from "react-redux";
 import { setOrders } from "./features/home/appSlice";
 import {
@@ -16,13 +17,20 @@ import {
   removeFromCart,
   totalAmount,
 } from "./features/home/appSlice";
+import { ThunkDispatch } from "@reduxjs/toolkit";
 function Cart() {
-  const dispatch = useDispatch();
-  const cartItems = useSelector((store) => store.app.cartItems);
-  const total = useSelector((store) => store.app.total);
+  const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
+  const cartItems = useSelector((store: StoreType) => store.app.cartItems);
+  const total = useSelector((store: StoreType) => store.app.total);
   useEffect(() => {
     dispatch(totalAmount(cartItems));
   }, [cartItems, dispatch]);
+  const Style = {
+    position: "fixed",
+    bottom: "10px",
+    right: "700px",
+    align: "center",
+  } as React.CSSProperties;
   return (
     <div className="container">
       <h1
@@ -94,14 +102,7 @@ function Cart() {
           })}
         </Grid>
       </Box>
-      <div
-        style={{
-          position: "fixed",
-          bottom: "10px",
-          right: "700px",
-          align: "center",
-        }}
-      >
+      <div style={Style}>
         <h2>
           Total - ₹{total}
           {cartItems.length > 0 && (

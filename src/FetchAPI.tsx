@@ -2,7 +2,8 @@ import axios from "axios";
 const header = `http://localhost:3080/`;
 const token = localStorage.getItem("token");
 let url;
-async function fetchApiGet(path) {
+
+async function fetchApiGet(path: string) {
   url = header + path;
   const res = await axios.get(url, {
     headers: {
@@ -11,7 +12,7 @@ async function fetchApiGet(path) {
   });
   return await res.data;
 }
-async function fetchApiPost(path, body) {
+async function fetchApiPost(path: string, body: unknown) {
   url = header + path;
   await axios.post(url, body, {
     headers: {
@@ -21,7 +22,7 @@ async function fetchApiPost(path, body) {
     },
   });
 }
-async function fetchApiPostUnauth(path, body) {
+async function fetchApiPostUnauth(path: string, body: unknown) {
   url = header + path;
   const res = await axios.post(url, body, {
     headers: {

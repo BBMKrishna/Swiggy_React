@@ -8,7 +8,11 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import StarIcon from "@mui/icons-material/Star";
 import Grid from "@mui/material/Grid";
-function Restaurant({ restaurant }) {
+import { RestaurantType } from "./interfaces";
+type RestaurantProps = {
+  restaurant: RestaurantType;
+};
+function Restaurant({ restaurant }: RestaurantProps) {
   const { id, imageUrl, name, address, city, rating } = restaurant;
   return (
     <Grid item xs={3}>
