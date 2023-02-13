@@ -12,7 +12,7 @@ import Login from "./Login";
 import { useSelector } from "react-redux";
 import { StoreType } from "./interfaces";
 function App() {
-  const token = useSelector((store:StoreType) => store.app.token);
+  const token = useSelector((store: StoreType) => store.app.token);
   return (
     <>
       <BrowserRouter>

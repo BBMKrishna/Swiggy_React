@@ -13,16 +13,16 @@ import AddIcon from "@mui/icons-material/Add";
 import IconButton from "@mui/material/IconButton";
 import { addToCart, removeFromCart } from "./features/home/appSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { StoreType, CartItems } from "./interfaces";
+import { StoreType, CartItemType } from "./interfaces";
 
 type DishProps = {
-  dish: CartItems;
+  dish: CartItemType;
 };
-function Dish({ dish }:DishProps) {
+function Dish({ dish }: DishProps) {
   const dispatch = useDispatch();
-  const cartItems  = useSelector((store:StoreType) => store.app.cartItems);
+  const cartItems = useSelector((store: StoreType) => store.app.cartItems);
   const { id, imageUrl, name, nonVeg, price } = dish;
- let quantities: any = cartItems.find((x) => x.id === id)?.quantity;
+  let quantities: any = cartItems.find((x) => x.id === id)?.quantity;
   return (
     <Grid item xs={3}>
       <Card className="card" sx={{ maxWidth: 345 }}>
@@ -69,9 +69,7 @@ function Dish({ dish }:DishProps) {
                 <RemoveIcon />
               </IconButton>
 
-              <Button variant="outlined">
-                {quantities}
-              </Button>
+              <Button variant="outlined">{quantities}</Button>
               <IconButton
                 onClick={() => {
                   dispatch(addToCart(id));

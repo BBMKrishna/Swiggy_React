@@ -9,9 +9,9 @@ import { StoreType } from "./interfaces";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 const Dishes = () => {
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
-  const dishes  = useSelector((store:StoreType) => store.app.dishes);
-  const { restaurantId }:any = useParams();
-    const restaurantID: number = parseInt(restaurantId);
+  const dishes = useSelector((store: StoreType) => store.app.dishes);
+  const { restaurantId }: any = useParams();
+  const restaurantID: number = parseInt(restaurantId);
   useEffect(() => {
     dispatch(getDishes(restaurantID));
   }, [dispatch, restaurantID]);

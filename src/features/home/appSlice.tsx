@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchApiPostUnauth, fetchApiGet, fetchApiPost } from "../../FetchAPI";
-import { CartItems, InitialState, User, LoginUser } from "../../interfaces";
+import { CartItemType, InitialState, User, LoginUser } from "../../interfaces";
 
 const initialState: InitialState = {
   cartItems: [],
@@ -48,7 +48,7 @@ export const signUp = createAsyncThunk("app/signUp", async (user: User) => {
 
 export const setOrders = createAsyncThunk(
   "app/setOrders",
-  async (cartItems: CartItems[]) => {
+  async (cartItems: CartItemType[]) => {
     try {
       await fetchApiPost("orders", { orderItems: cartItems });
     } catch (err) {
@@ -110,7 +110,7 @@ const appSlice = createSlice({
     totalAmount: (state, action) => {
       let temp = 0;
       action.payload.forEach(
-        (item: CartItems) => (temp += item.quantity * item.price)
+        (item: CartItemType) => (temp += item.quantity * item.price)
       );
       state.total = temp;
     },

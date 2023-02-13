@@ -12,7 +12,7 @@ async function fetchApiGet(path: string) {
   });
   return await res.data;
 }
-async function fetchApiPost(path: string, body: any) {
+async function fetchApiPost(path: string, body: unknown) {
   url = header + path;
   await axios.post(url, body, {
     headers: {
@@ -22,7 +22,7 @@ async function fetchApiPost(path: string, body: any) {
     },
   });
 }
-async function fetchApiPostUnauth(path: string, body: any) {
+async function fetchApiPostUnauth(path: string, body: unknown) {
   url = header + path;
   const res = await axios.post(url, body, {
     headers: {

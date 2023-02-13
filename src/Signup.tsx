@@ -6,14 +6,18 @@ import { useDispatch } from "react-redux";
 import { signUp } from "./features/home/appSlice";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 
-  function Signup():JSX.Element{
-  interface User{
-    name: string
-    phone: string
-    password: string
+function Signup(): JSX.Element {
+  interface User {
+    name: string;
+    phone: string;
+    password: string;
   }
-  const [user, setUser] = React.useState<User>({ name: "", phone: "", password: "" });
- const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
+  const [user, setUser] = React.useState<User>({
+    name: "",
+    phone: "",
+    password: "",
+  });
+  const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
   const navigate = useNavigate();
   const { name, phone, password } = user;
   function formChange(event: React.ChangeEvent<HTMLInputElement>) {

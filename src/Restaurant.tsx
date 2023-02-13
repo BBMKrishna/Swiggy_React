@@ -12,7 +12,7 @@ import { RestaurantType } from "./interfaces";
 type RestaurantProps = {
   restaurant: RestaurantType;
 };
-function Restaurant({ restaurant }:RestaurantProps) {
+function Restaurant({ restaurant }: RestaurantProps) {
   const { id, imageUrl, name, address, city, rating } = restaurant;
   return (
     <Grid item xs={3}>

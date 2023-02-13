@@ -9,7 +9,7 @@ export type User = {
   password: string;
 };
 
-export type CartItems = {
+export type CartItemType = {
   price: number;
   quantity: number;
   id: number;
@@ -22,27 +22,27 @@ export type CartItems = {
   nonVeg: boolean;
 };
 
-export type Orders = {
+export type OrderType = {
   id: number;
   userId: number;
   orderItemsLength: number;
   createdAt: string;
 };
 
-export type OrderItems = {
+export type OrderItemType = {
   id: number;
   quantity: number;
   price: number;
   orderId: number;
   dishId: number;
-  dish: CartItems;
+  dish: CartItemType;
 };
 
 export type InitialState = {
-  cartItems: CartItems[];
-  orders: Orders[];
-  orderItems: OrderItems[];
-  dishes: CartItems[];
+  cartItems: CartItemType[];
+  orders: OrderType[];
+  orderItems: OrderItemType[];
+  dishes: CartItemType[];
   token: null | string;
   restaurants: [];
   total: number;

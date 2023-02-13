@@ -8,7 +8,7 @@ import React from "react";
 function Login() {
   const [user, setUser] = React.useState({ phone: "", password: "" });
   const navigate = useNavigate();
-const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
+  const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
   const { phone, password } = user;
   function formChange(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault();

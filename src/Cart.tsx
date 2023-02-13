@@ -20,8 +20,8 @@ import {
 import { ThunkDispatch } from "@reduxjs/toolkit";
 function Cart() {
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
-  const cartItems = useSelector((store:StoreType) => store.app.cartItems);
-  const total = useSelector((store:StoreType) => store.app.total);
+  const cartItems = useSelector((store: StoreType) => store.app.cartItems);
+  const total = useSelector((store: StoreType) => store.app.total);
   useEffect(() => {
     dispatch(totalAmount(cartItems));
   }, [cartItems, dispatch]);
@@ -102,9 +102,7 @@ function Cart() {
           })}
         </Grid>
       </Box>
-      <div
-        style={Style}
-      >
+      <div style={Style}>
         <h2>
           Total - ₹{total}
           {cartItems.length > 0 && (
