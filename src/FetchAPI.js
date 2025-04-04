@@ -1,5 +1,5 @@
 import axios from "axios";
-const header = `http://localhost:3080/`;
+const header = process.env.REACT_APP_URL;
 const token = localStorage.getItem("token");
 let url;
 async function fetchApiGet(path) {
