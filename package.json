@@ -3,10 +3,7 @@
   "version": "1.0.0",
   "description": "Backend for the Swiggy Project",
   "main": "index.js",
-  "scripts": {
-    "start": "node index.js"
-  },
-  "author": "",
+  "author": "krishna",
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^6.4.1",
