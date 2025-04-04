@@ -55,40 +55,46 @@ export const setOrders = createAsyncThunk(
     }
   }
 );
+
 const appSlice = createSlice({
   name: "app",
   initialState,
   reducers: {
     addToCart: (state, action) => {
       const id = action.payload;
-      if (state.cartItems.find((x) => x.id === id) === undefined) {
-        let dishesIndex = state.dishes.findIndex((item) => item.id === id);
-        let newItem = state.dishes[dishesIndex];
-        newItem.quantity = 1;
-        state.cartItems.push(newItem);
+      const existingItem = state.cartItems.find(item => item.id === id);
+
+      if (existingItem) {
+        return {
+          ...state,
+          cartItems: state.cartItems.map(item =>
+            item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+          ),
+        };
       } else {
-        let updatedItem = state.cartItems.map((item) => {
-          if (item.id === id) {
-            item.quantity += 1;
-          }
-          return item;
-        });
-        state.cartItems = updatedItem;
+        const newItem = state.dishes.find(dish => dish.id === id);
+        return {
+          ...state,
+          cartItems: [...state.cartItems, { ...newItem, quantity: 1 }],
+        };
       }
     },
     removeFromCart: (state, action) => {
       const id = action.payload;
-      if (state.cartItems.find((x) => x.id === id).quantity > 1) {
-        var newItem = state.cartItems.map((item) => {
-          if (item.id === id) {
-            item.quantity -= 1;
-          }
-          return item;
-        });
-        state.cartItems = newItem;
+      const itemToRemove = state.cartItems.find(item => item.id === id);
+
+      if (itemToRemove.quantity === 1) {
+        return {
+          ...state,
+          cartItems: state.cartItems.filter(item => item.id !== id),
+        };
       } else {
-        newItem = state.cartItems.filter((item) => item.id !== id);
-        state.cartItems = newItem;
+        return {
+          ...state,
+          cartItems: state.cartItems.map(item =>
+            item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+          ),
+        };
       }
     },
     updateOrderItems: (state, action) => {
@@ -125,9 +131,10 @@ const appSlice = createSlice({
         localStorage.setItem("token", action.payload.accessToken);
         localStorage.removeItem("persist:root");
         window.location.reload();
-      })
+      });
   },
 });
+
 export const {
   addToCart,
   removeFromCart,

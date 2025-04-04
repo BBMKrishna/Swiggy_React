@@ -13,7 +13,9 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { removeToken } from "../features/home/appSlice";
 import { useNavigate } from "react-router-dom";
+
 const drawerWidth = 240;
+
 function DrawerAppBar(props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -27,27 +29,50 @@ function DrawerAppBar(props) {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
+      <Typography variant="h6" sx={{ my: 2, color: "orange" }}>
         Swiggy
       </Typography>
       <Divider />
+      <Link to="/" style={{ textDecoration: "none", color: "orange" }}>
+        <Button sx={{ color: "orange" }}>Home</Button>
+      </Link>
+      <Link to="/cart" style={{ textDecoration: "none", color: "orange" }}>
+        <Button sx={{ color: "orange" }}>
+          Cart {cartItems.length > 0 && `(${cartItems.length})`}
+        </Button>
+      </Link>
+      <Link to="/orders" style={{ textDecoration: "none", color: "orange" }}>
+        <Button sx={{ color: "orange" }}>Orders</Button>
+      </Link>
+      <Button
+        sx={{ color: "orange" }}
+        onClick={() => {
+          localStorage.removeItem("token");
+          localStorage.removeItem("persist:root");
+          navigate("/");
+          dispatch(removeToken());
+        }}
+      >
+        Logout
+      </Button>
     </Box>
   );
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar
         component="nav"
-        style={{
-          backgroundColor: "white",
+        sx={{
+          background: "linear-gradient(135deg, #111111 0%, #1f1f1f 100%)",
         }}
       >
         <Toolbar>
           <IconButton
-            color="white"
+            color="orange"
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
@@ -59,7 +84,7 @@ function DrawerAppBar(props) {
             variant="h6"
             component="div"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-            style={{ marginLeft: "30px" }}
+            style={{ marginLeft: "30px", color: "orange" }}
           >
             <Link
               style={{
@@ -80,7 +105,7 @@ function DrawerAppBar(props) {
               style={{
                 textDecoration: "none",
                 color: "orange",
-                fontFamily: "serif",
+                fontFamily: "san-serif",
                 fontWeight: "700",
                 fontSize: "12px",
               }}
@@ -113,7 +138,7 @@ function DrawerAppBar(props) {
               }}
               to="/orders"
             >
-              <Button style={{ color: "orange" }}>orders</Button>
+              <Button style={{ color: "orange" }}>Orders</Button>
             </Link>
             <Link
               style={{
